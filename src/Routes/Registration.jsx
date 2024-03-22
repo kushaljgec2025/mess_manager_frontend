@@ -1,9 +1,12 @@
 import React from 'react';
+import { RegistrationForm } from '../components';
 
 function Registration() {
 	return (
 		<>
-			<h1>Registration</h1>
+			<div className='min-h-screen flex items-center justify-center'>
+				<RegistrationForm />
+			</div>
 		</>
 	);
 }
