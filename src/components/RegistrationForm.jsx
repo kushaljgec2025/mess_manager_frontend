@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Input, PasswordInput, Button } from './index';
+import { Input, Button } from './index';
 
 function RegistrationForm() {
 	const { register, handleSubmit } = useForm({});
@@ -35,15 +35,16 @@ function RegistrationForm() {
 							placeholder='Email'
 							{...register('email')}
 						/>
-						<PasswordInput
+						<Input
 							label='Password'
+							type='password'
 							placeholder='Password'
 							{...register('password')}
 						/>
 						<Input
 							label='Confirm Password'
 							placeholder='Confirm Password'
-							type='password'
+							type='text'
 							{...register('confirmPassword')}
 						/>
 						<Input
@@ -60,6 +61,12 @@ function RegistrationForm() {
 						>
 							Register
 						</Button>
+						<p className='text-center'>
+							Already have a account?{' '}
+							<span className='text-blue-600 cursor-pointer hover:underline'>
+								<a href='/login'>Login</a>
+							</span>
+						</p>
 					</div>
 				</form>
 			</div>

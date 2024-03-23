@@ -1,11 +1,14 @@
 import React from 'react';
+import { LoginForm } from '../components';
 
-function Login() {
+function Registration() {
 	return (
 		<>
-			<h1 className='text-3xl font-bold underline text-green-400'>Login</h1>
+			<div className='min-h-screen flex items-center justify-center'>
+				<LoginForm />
+			</div>
 		</>
 	);
 }
 
-export default Login;
+export default Registration;
