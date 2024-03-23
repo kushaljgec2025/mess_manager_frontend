@@ -3,7 +3,11 @@ import { useForm } from 'react-hook-form';
 import { Input, PasswordInput, Button } from './index';
 
 function LoginForm() {
-	const { register, handleSubmit } = useForm({});
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({});
 
 	const submit = (data) => {
 		console.log('User details', data);
@@ -22,13 +26,40 @@ function LoginForm() {
 						<Input
 							label='Email'
 							placeholder='Email'
-							{...register('email')}
+							{...register('email', {
+								required: true,
+								validate: {
+									matchPattern: (value) => {
+										return (
+											/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+												value
+											) || 'Invalid email address'
+										);
+									},
+								},
+							})}
 						/>
+						{errors && errors.email?.type === 'required' ? (
+							<p className='text-red-700 text-xs'>Email is required</p>
+						) : (
+							<p className='text-red-700 text-xs'>{errors.email?.message}</p>
+						)}
 						<PasswordInput
 							label='Password'
 							placeholder='Password'
-							{...register('password')}
+							{...register('password', {
+								required: true,
+								minLength: 6,
+							})}
 						/>
+						{errors.password?.type == 'required' && (
+							<p className='text-red-700 text-xs'>Password is required</p>
+						)}
+						{errors.password?.type == 'minLength' && (
+							<p className='text-red-700 text-xs'>
+								Password must be at least 6 characters{' '}
+							</p>
+						)}
 						<Button
 							type='submit'
 							className='bg-slate-400 text-white rounded-lg p-2 w-full '

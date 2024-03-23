@@ -3,10 +3,19 @@ import { useForm } from 'react-hook-form';
 import { Input, Button } from './index';
 
 function RegistrationForm() {
-	const { register, handleSubmit } = useForm({});
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({});
+	const [error, setError] = useState('');
 
 	const submit = (data) => {
-		console.log('User details', data);
+		try {
+			console.log('User details', data);
+		} catch (error) {
+			setError(error.message);
+		}
 	};
 	return (
 		<>
@@ -23,38 +32,64 @@ function RegistrationForm() {
 							label='Username'
 							type='text'
 							placeholder='Username'
-							{...register('username')}
+							{...register('username', {
+								required: true,
+								patton: /^([A-Za-z0-9]){4,20}$/,
+							})}
 						/>
+						{errors.username && (
+							<p className='text-red-700 text-xs'>Username is required</p>
+						)}
 						<Input
 							label='Full Name'
 							placeholder='Full Name'
-							{...register('fullName')}
+							{...register('fullName', {
+								required: true,
+								patton: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
+							})}
 						/>
+						{errors.fullName && (
+							<p className='text-red-700 text-xs'>Full Name is required</p>
+						)}
 						<Input
 							label='Email'
 							placeholder='Email'
-							{...register('email')}
+							{...register('email', { required: true })}
 						/>
+						{errors.email && (
+							<p className='text-red-700 text-xs'>Email is required</p>
+						)}
 						<Input
 							label='Password'
 							type='password'
 							placeholder='Password'
-							{...register('password')}
+							{...register('password', { required: true })}
 						/>
+						{errors.password && (
+							<p className='text-red-700 text-xs'>Password is required</p>
+						)}
 						<Input
 							label='Confirm Password'
 							placeholder='Confirm Password'
 							type='text'
-							{...register('confirmPassword')}
+							{...register('confirmPassword', { required: true })}
 						/>
+						{errors.confirmPassword && (
+							<p className='text-red-700 text-xs'>
+								Confirm Password is required
+							</p>
+						)}
 						<Input
 							label='Avatar'
 							placeholder='Avatar'
 							type='file'
 							accept='image/png, image/jpeg, image/jpg'
-							{...register('avatar')}
+							{...register('avatar', { required: true })}
 							className='block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
 						/>
+						{errors.avatar && (
+							<p className='text-red-700 text-xs'>Avatar is required</p>
+						)}
 						<Button
 							type='submit'
 							className='bg-slate-400 text-white rounded-lg p-2 w-full '
