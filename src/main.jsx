@@ -8,11 +8,11 @@ import {
 	createBrowserRouter,
 	createRoutesFromElements,
 } from 'react-router-dom';
-import Login from './Routes/Login.jsx';
-import Mess from './Routes/Mess.jsx';
-import Registration from './Routes/Registration.jsx';
-import DashBoard from './Routes/DashBoard.jsx';
-import User from './Routes/User.jsx';
+import Login from './Pages/Login.jsx';
+import Mess from './Pages/Mess.jsx';
+import Registration from './Pages/Registration.jsx';
+import DashBoard from './Pages/DashBoard.jsx';
+import User from './Pages/User.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
