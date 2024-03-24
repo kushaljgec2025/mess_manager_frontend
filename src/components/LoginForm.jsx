@@ -31,7 +31,7 @@ function LoginForm() {
 								validate: {
 									matchPattern: (value) => {
 										return (
-											/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+											/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
 												value
 											) || 'Invalid email address'
 										);
@@ -64,7 +64,7 @@ function LoginForm() {
 							type='submit'
 							className='bg-slate-400 text-white rounded-lg p-2 w-full '
 						>
-							Register
+							Login
 						</Button>
 						<p className='text-center'>
 							Don't have a account?{' '}

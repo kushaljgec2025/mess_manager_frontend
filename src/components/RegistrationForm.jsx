@@ -8,8 +8,8 @@ function RegistrationForm() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm({});
+	const [image, setImage] = useState('');
 	const [error, setError] = useState('');
-
 	const submit = (data) => {
 		try {
 			console.log('User details', data);
@@ -23,6 +23,7 @@ function RegistrationForm() {
 				<h1 className='font-sans font-medium text-3xl m-2 text-center '>
 					Registration
 				</h1>
+
 				<form
 					onSubmit={handleSubmit(submit)}
 					className='flex flex-col gap-2'
@@ -34,49 +35,95 @@ function RegistrationForm() {
 							placeholder='Username'
 							{...register('username', {
 								required: true,
-								patton: /^([A-Za-z0-9]){4,20}$/,
+								validate: {
+									matchPattern: (value) => {
+										return (
+											/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/.test(value) ||
+											'Username only contains [a-z, A-Z, 0-9, .]'
+										);
+									},
+								},
 							})}
 						/>
-						{errors.username && (
+						{errors.username?.type == 'required' && (
 							<p className='text-red-700 text-xs'>Username is required</p>
+						)}
+						{errors.username?.type == 'matchPattern' && (
+							<p className='text-red-700 text-xs'>{errors.username?.message}</p>
 						)}
 						<Input
 							label='Full Name'
 							placeholder='Full Name'
 							{...register('fullName', {
 								required: true,
-								patton: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
+								validate: {
+									matchPattern: (value) => {
+										return (
+											/^[A-Z][a-z]* [A-Z][a-z]*$/.test(value) ||
+											'Give the Correct Full Name'
+										);
+									},
+								},
 							})}
 						/>
-						{errors.fullName && (
+						{errors.fullName?.type == 'required' && (
 							<p className='text-red-700 text-xs'>Full Name is required</p>
+						)}
+						{errors.fullName?.type == 'matchPattern' && (
+							<p className='text-red-700 text-xs'>{errors.fullName?.message}</p>
 						)}
 						<Input
 							label='Email'
 							placeholder='Email'
-							{...register('email', { required: true })}
+							{...register('email', {
+								required: true,
+								validate: {
+									matchPattern: (value) => {
+										return (
+											/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+												value
+											) || 'Invalid email address'
+										);
+									},
+								},
+							})}
 						/>
-						{errors.email && (
+						{errors && errors.email?.type === 'required' ? (
 							<p className='text-red-700 text-xs'>Email is required</p>
+						) : (
+							<p className='text-red-700 text-xs'>{errors.email?.message}</p>
 						)}
 						<Input
 							label='Password'
 							type='password'
 							placeholder='Password'
-							{...register('password', { required: true })}
+							{...register('password', {
+								required: true,
+								minLength: 6,
+							})}
 						/>
-						{errors.password && (
+						{errors.password?.type == 'required' && (
 							<p className='text-red-700 text-xs'>Password is required</p>
+						)}
+						{errors.password?.type == 'minLength' && (
+							<p className='text-red-700 text-xs'>
+								Password must be at least 6 characters
+							</p>
 						)}
 						<Input
 							label='Confirm Password'
 							placeholder='Confirm Password'
 							type='text'
-							{...register('confirmPassword', { required: true })}
+							{...register('confirmPassword', { required: true, minLength: 6 })}
 						/>
-						{errors.confirmPassword && (
+						{errors.confirmPassword?.type == 'required' && (
 							<p className='text-red-700 text-xs'>
 								Confirm Password is required
+							</p>
+						)}
+						{errors.confirmPassword?.type == 'minLength' && (
+							<p className='text-red-700 text-xs'>
+								Confirm Password must be at least 6 characters
 							</p>
 						)}
 						<Input
