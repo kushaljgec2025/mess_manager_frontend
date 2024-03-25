@@ -1,12 +1,20 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { Outlet } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { getUser } from './api/auth';
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  return <></>;
+export default function App() {
+	useEffect(() => {
+		const getUserDetails = async () => {
+			const user = await getUser();
+			console.log(user);
+		};
+		getUserDetails();
+	}, []);
+	return (
+		<>
+			<Toaster />
+			<Outlet />
+		</>
+	);
 }
-
-export default App;
