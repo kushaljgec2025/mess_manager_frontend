@@ -5,10 +5,16 @@ const backendEndpoint_userRoute =
 
 export const userLogin = async (email, password) => {
 	try {
-		const response = await axios.post(`${backendEndpoint_userRoute}/login`, {
-			email,
-			password,
-		});
+		const response = await axios.post(
+			'/users/login',
+			{
+				email,
+				password,
+			},
+			{
+				withCredentials: true,
+			}
+		);
 		return response.data;
 	} catch (error) {
 		return error.response.data;
