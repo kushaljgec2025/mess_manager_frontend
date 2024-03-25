@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button } from './index';
 
@@ -8,7 +8,6 @@ function RegistrationForm() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm({});
-	const [image, setImage] = useState('');
 	const [error, setError] = useState('');
 	const submit = (data) => {
 		try {
@@ -17,6 +16,7 @@ function RegistrationForm() {
 			setError(error.message);
 		}
 	};
+
 	return (
 		<>
 			<div className='border-2 border-slate-400 flex flex-col gap-2 p-4  bg-slate-900 rounded-lg'>

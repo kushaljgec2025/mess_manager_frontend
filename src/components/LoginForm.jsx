@@ -1,16 +1,42 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, PasswordInput, Button } from './index';
+import { userLogin } from '../api/auth';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function LoginForm() {
+	const [error, setError] = useState('');
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm({});
 
-	const submit = (data) => {
-		console.log('User details', data);
+	const navigate = useNavigate();
+
+	const submit = async (data) => {
+		const { email, password } = data;
+		const user = await userLogin(email, password);
+		if (user.success === false) {
+			console.log('error', user);
+			setError(user.message);
+			console.log(error);
+			toast.error('Login failed', {
+				duration: 4000,
+				position: 'bottom-right',
+			});
+		} else {
+			setError('');
+			console.log(user);
+			toast.success('User Logged in', {
+				duration: 4000,
+				position: 'bottom-right',
+			});
+			// setTimeout(() => {
+			// 	navigate('/');
+			// }, 2000);
+		}
 	};
 	return (
 		<>
@@ -66,6 +92,9 @@ function LoginForm() {
 						>
 							Login
 						</Button>
+						{error && (
+							<p className='text-red-700 text-xs text-center'>{error}</p>
+						)}
 						<p className='text-center'>
 							Don't have a account?{' '}
 							<span className='text-blue-600 cursor-pointer hover:underline'>
