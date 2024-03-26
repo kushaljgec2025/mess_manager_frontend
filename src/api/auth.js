@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-const backendEndpoint_userRoute =
-	import.meta.env.VITE_BACKEND_API_ENDPOINT + '/users';
-
 export const userLogin = async (email, password) => {
 	try {
 		const response = await axios.post(
@@ -45,5 +42,16 @@ export const getUser = async () => {
 			);
 			throw refreshTokenError;
 		}
+	}
+};
+
+export const getUserById = async (userId) => {
+	try {
+		const response = await axios.get(`/api/v1/users/getUserById/${userId}`, {
+			withCredentials: true,
+		});
+		return response.data;
+	} catch (error) {
+		return error.response.data;
 	}
 };

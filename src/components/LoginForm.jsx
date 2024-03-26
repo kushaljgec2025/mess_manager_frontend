@@ -4,6 +4,8 @@ import { Input, PasswordInput, Button } from './index';
 import { userLogin } from '../api/auth';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/features/auth/authSlice.js';
 
 function LoginForm() {
 	const [error, setError] = useState('');
@@ -14,28 +16,32 @@ function LoginForm() {
 	} = useForm({});
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const submit = async (data) => {
 		const { email, password } = data;
 		const user = await userLogin(email, password);
-		if (user.success === false) {
+		console.log(user);
+		if (user.success === 200) {
+			setError('');
+			console.log(user);
+			dispatch(login(user.data));
+			toast.success('User Logged in', {
+				duration: 3000,
+				position: 'bottom-right',
+			});
+			setTimeout(() => {
+				navigate('/');
+			}, 2000);
+		} else if (user.success === false) {
 			console.log('error', user);
 			setError(user.message);
 			console.log(error);
 			toast.error('Login failed', {
-				duration: 4000,
+				duration: 3000,
 				position: 'bottom-right',
 			});
 		} else {
-			setError('');
-			console.log(user);
-			toast.success('User Logged in', {
-				duration: 4000,
-				position: 'bottom-right',
-			});
-			// setTimeout(() => {
-			// 	navigate('/');
-			// }, 2000);
 		}
 	};
 	return (

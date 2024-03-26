@@ -15,6 +15,7 @@ import DashBoard from './Pages/DashBoard.jsx';
 import User from './Pages/User.jsx';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
+import UserById from './Pages/UserById.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -35,8 +36,12 @@ const router = createBrowserRouter(
 				element={<Login />}
 			/>
 			<Route
-				path='user/:id'
+				path='user'
 				element={<User />}
+			/>
+			<Route
+				path='user/:id'
+				element={<UserById />}
 			/>
 			<Route
 				path='mess/:id'
