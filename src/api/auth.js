@@ -6,7 +6,7 @@ const backendEndpoint_userRoute =
 export const userLogin = async (email, password) => {
 	try {
 		const response = await axios.post(
-			'/users/login',
+			'/api/v1/users/login',
 			{
 				email,
 				password,
@@ -23,11 +23,27 @@ export const userLogin = async (email, password) => {
 
 export const getUser = async () => {
 	try {
-		const user = await axios.get(`${backendEndpoint_userRoute}/getCurrentUser`);
-		console.log(user.data);
-		return user.data;
+		const response = await axios.get('/api/v1/users/getCurrentUser', {
+			withCredentials: true,
+		});
+		return response.data.data;
 	} catch (error) {
-		console.log(error.response.data);
-		return error.response.data;
+		console.log('An error occurred while fetching user data:', error);
+		try {
+			const refreshTokenResponse = await axios.get(
+				'/api/v1/users/newRefreshToken',
+				{
+					withCredentials: true,
+				}
+			);
+			console.log('New refresh token:', refreshTokenResponse.data);
+			return getUser();
+		} catch (refreshTokenError) {
+			console.log(
+				'An error occurred while fetching new refresh token:',
+				refreshTokenError
+			);
+			throw refreshTokenError;
+		}
 	}
 };
