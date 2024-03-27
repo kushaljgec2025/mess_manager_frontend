@@ -2,11 +2,13 @@
 
 # Mess-Manager Frontend
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
-<img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white">
-<img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white">
-<img src="https://img.shields.io/badge/React_Hook_Form-FF6C37?style=for-the-badge&logo=react&logoColor=white">
-<img src="https://img.shields.io/badge/Axios-7852B3?style=for-the-badge&logo=axios&logoColor=white">
+<div style="display: flex; flex-wrap: wrap;">
+    <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white">
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white">
+    <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white">
+    <img src="https://img.shields.io/badge/React_Hook_Form-FF6C37?style=for-the-badge&logo=react&logoColor=white">
+    <img src="https://img.shields.io/badge/Axios-7852B3?style=for-the-badge&logo=axios&logoColor=white">
+</div>
 
 
 ## What is Mess-Manager Frontend?
