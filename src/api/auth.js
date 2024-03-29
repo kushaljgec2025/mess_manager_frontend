@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+export const userSignup = async (user) => {
+	console.log('full name', user.fullName);
+	console.log('email', user.email);
+	console.log('password', user.password);
+	console.log('confirm password', user.confirmPassword);
+	console.log('avatar', user.avatar);
+};
+
 export const userLogin = async (email, password) => {
 	try {
 		const response = await axios.post(

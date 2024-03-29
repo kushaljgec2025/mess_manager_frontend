@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { RiPencilLine, RiLogoutBoxLine } from 'react-icons/ri';
 import { getUserById } from '../api/auth';
-import { getMesses } from '../api/mess';
+import { getMessesById } from '../api/mess';
 
 function UserById() {
 	const { id } = useParams();
@@ -10,7 +9,7 @@ function UserById() {
 	const [messes, setMesses] = useState([]);
 
 	useEffect(() => {
-		getMesses(id)
+		getMessesById(id)
 			.then((res) => {
 				setMesses(res.data);
 			})

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button } from './index';
+import { userSignup } from '../api/auth';
 
 function RegistrationForm() {
 	const {
@@ -11,7 +12,7 @@ function RegistrationForm() {
 	const [error, setError] = useState('');
 	const submit = (data) => {
 		try {
-			console.log('User details', data);
+			userSignup(data);
 		} catch (error) {
 			setError(error.message);
 		}
