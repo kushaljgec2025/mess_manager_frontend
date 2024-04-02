@@ -1,4 +1,44 @@
 import axios from 'axios';
+import FormData from 'form-data';
+
+export const userSignup = async (user) => {
+	try {
+		const { username, fullName, email, password, confirmPassword, avatar } =
+			user;
+
+		if (password !== confirmPassword) {
+			console.log('Passwords do not match');
+			return {
+				status: 'fail',
+				message: 'Passwords do not match',
+			};
+		}
+
+		const form = new FormData();
+		form.append('username', username);
+		form.append('avatar', avatar[0], avatar[0].name);
+
+		console.log([...form]);
+
+		const response = await axios.post('/api/v1/users/registration1', form, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				// ...form.getHeaders(),
+				// Authentication: 'Bearer ...',
+			},
+		});
+
+		console.log('Image uploaded successfully!');
+		return response.data;
+	} catch (error) {
+		// Handle any errors that occur during the signup process
+		console.log('Error:', error);
+		return {
+			status: 'error',
+			message: 'An error occurred during signup',
+		};
+	}
+};
 
 export const userLogin = async (email, password) => {
 	try {

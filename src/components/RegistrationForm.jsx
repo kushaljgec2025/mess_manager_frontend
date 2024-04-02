@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button } from './index';
+import { userSignup } from '../api/auth';
 
 function RegistrationForm() {
 	const {
@@ -9,10 +10,16 @@ function RegistrationForm() {
 		formState: { errors },
 	} = useForm({});
 	const [error, setError] = useState('');
-	const submit = (data) => {
+	const submit = async (data) => {
 		try {
-			console.log('User details', data);
+			setError('');
+			const userRegistration = await userSignup(data);
+			if (userRegistration?.status === 'fail') {
+				setError(userRegistration.message);
+			}
+			console.log(userRegistration);
 		} catch (error) {
+			console.log(error);
 			setError(error.message);
 		}
 	};
@@ -143,6 +150,9 @@ function RegistrationForm() {
 						>
 							Register
 						</Button>
+						{error && (
+							<p className='text-red-700 text-xs text-center mb-2'>{error}</p>
+						)}
 						<p className='text-center'>
 							Already have a account?{' '}
 							<span className='text-blue-600 cursor-pointer hover:underline'>
