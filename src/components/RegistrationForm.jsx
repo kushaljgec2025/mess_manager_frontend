@@ -10,10 +10,16 @@ function RegistrationForm() {
 		formState: { errors },
 	} = useForm({});
 	const [error, setError] = useState('');
-	const submit = (data) => {
+	const submit = async (data) => {
 		try {
-			userSignup(data);
+			setError('');
+			const userRegistration = await userSignup(data);
+			if (userRegistration?.status === 'fail') {
+				setError(userRegistration.message);
+			}
+			console.log(userRegistration);
 		} catch (error) {
+			console.log(error);
 			setError(error.message);
 		}
 	};
@@ -144,6 +150,9 @@ function RegistrationForm() {
 						>
 							Register
 						</Button>
+						{error && (
+							<p className='text-red-700 text-xs text-center mb-2'>{error}</p>
+						)}
 						<p className='text-center'>
 							Already have a account?{' '}
 							<span className='text-blue-600 cursor-pointer hover:underline'>
