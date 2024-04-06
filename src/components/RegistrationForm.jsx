@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button } from './index';
 import { userSignup } from '../api/auth';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function RegistrationForm() {
 	const {
@@ -10,17 +12,32 @@ function RegistrationForm() {
 		formState: { errors },
 	} = useForm({});
 	const [error, setError] = useState('');
+	const navigate = useNavigate();
 	const submit = async (data) => {
-		try {
+		setError('');
+		const user = await userSignup(data);
+
+		console.log(user);
+
+		if (user?.success === 201) {
 			setError('');
-			const userRegistration = await userSignup(data);
-			if (userRegistration?.status === 'fail') {
-				setError(userRegistration.message);
-			}
-			console.log(userRegistration);
-		} catch (error) {
-			console.log(error);
-			setError(error.message);
+			console.log(user);
+			toast.success('User Registered', {
+				duration: 3000,
+				position: 'bottom-right',
+			});
+
+			setTimeout(() => {
+				navigate('/login');
+			}, 2000);
+		} else if (user?.success === false) {
+			console.log('error', user);
+			setError(user.message);
+			toast.error('Registration failed', {
+				duration: 3000,
+				position: 'bottom-right',
+			});
+		} else {
 		}
 	};
 
