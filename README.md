@@ -16,10 +16,30 @@ Mess-Manager Frontend is a React application that is designed to help users mana
 
 ## How to Install
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Start the server: `npm run dev`
-4. The webpage will be accessible at `https://localhost:5173`
+1. Clone this repository and as well as the [backend repository](https://github.com/Darkrider0007/mess_manager_backend)
+
+For the frontend:
+
+```bash
+git clone https://github.com/kushaljgec2025/mess_manager_frontend.git
+```
+
+For the backend:
+
+```bash
+git clone https://github.com/Darkrider0007/mess_manager_backend.git
+```
+
+2. Install dependencies for both the frontend and backend:
+
+```bash
+npm install
+```
+
+3. Start the both the servers: `npm run dev` or `npm run dev -- --port=0.0.0.0`
+4. The Frontend will be accessible at `https://localhost:5173`
+
+Note: Spin up the backend server first and then the frontend server.
 
 ## Pages
 
