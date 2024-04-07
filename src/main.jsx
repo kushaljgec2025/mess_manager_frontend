@@ -16,6 +16,7 @@ import User from './Pages/User.jsx';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
 import UserById from './Pages/UserById.jsx';
+import CreateNewMess from './Pages/CreateNewMess.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -46,6 +47,10 @@ const router = createBrowserRouter(
 			<Route
 				path='mess/:id'
 				element={<Mess />}
+			/>
+			<Route
+				path='create-new-mess'
+				element={<CreateNewMess />}
 			/>
 		</Route>
 	)
