@@ -5,6 +5,8 @@ import { getUser } from './api/auth';
 import { useDispatch } from 'react-redux';
 import { login } from './store/features/auth/authSlice';
 import { Footer, Navbar } from './components';
+import { getMess } from './api/mess';
+import { addMess } from './store/features/mess/messSlice';
 
 export default function App() {
 	const dispatch = useDispatch();
@@ -13,6 +15,13 @@ export default function App() {
 			.then((userData) => {
 				if (userData) {
 					dispatch(login(userData));
+					getMess()
+						.then((messData) => {
+							dispatch(addMess(messData));
+						})
+						.catch((error) => {
+							console.log('An error occurred while fetching mess data:', error);
+						});
 				} else {
 					dispatch(login());
 				}
