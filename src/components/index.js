@@ -5,6 +5,8 @@ import Button from './Button';
 import PasswordInput from './PasswordInput';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import Expanses from './Expanses';
+import MessCard from './MessCard';
 
 export {
 	RegistrationForm,
@@ -14,4 +16,6 @@ export {
 	PasswordInput,
 	Navbar,
 	Footer,
+	Expanses,
+	MessCard,
 };
