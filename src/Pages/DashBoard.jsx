@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getTransactions } from '../api/transaction';
+import { Expanses, MessCard } from '../components';
 
 function DashBoard() {
+	const [name, setName] = React.useState('');
+	const [expenses, setExpenses] = React.useState([]);
+
 	const userDetails = useSelector((state) => state.auth.userData);
 	const messData = useSelector((state) => state.mess.messData).data;
 	const navigate = useNavigate();
-	// console.log(userDetails);
-	console.log(messData);
-	const name = userDetails?.fullName?.split(' ')[0];
 
 	const redirect = () => {
 		navigate('/create-new-mess');
 	};
-	function capitalizeEachWord(str) {
-		return str.replace(/\b\w/g, function (char) {
-			return char.toUpperCase();
+
+	useEffect(() => {
+		if (userDetails) {
+			setName(userDetails?.fullName?.split(' ')[0]);
+		}
+	}, [userDetails]);
+
+	useEffect(() => {
+		getTransactions().then((data) => {
+			setExpenses(data);
 		});
-	}
+	}, []);
 
 	return (
 		<>
@@ -30,12 +39,9 @@ function DashBoard() {
 							{messData.map((mess, index) => (
 								<div
 									key={index}
-									className='p-4 border-gray-200 border-2 rounded-md cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out'
 									onClick={() => navigate(`/mess/${mess._id}`)}
 								>
-									<h3 className='text-xl font-semibold text-gray-600'>
-										{capitalizeEachWord(mess.messName)}
-									</h3>
+									<MessCard {...mess} />
 								</div>
 							))}
 						</div>
@@ -56,6 +62,16 @@ function DashBoard() {
 					<h1 className='text-2xl font-semibold text-gray-400'>
 						Your Expenses
 					</h1>
+					<div className='flex flex-col gap-4'>
+						{expenses.map((expense, index) => (
+							<div
+								key={index}
+								className='flex flex-wrap gap-4 p-4'
+							>
+								<Expanses {...expense} />
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 		</>
