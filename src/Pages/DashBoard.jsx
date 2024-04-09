@@ -62,15 +62,16 @@ function DashBoard() {
 					<h1 className='text-2xl font-semibold text-gray-400'>
 						Your Expenses
 					</h1>
-					<div className='flex flex-col gap-4'>
-						{expenses.map((expense, index) => (
-							<div
-								key={index}
-								className='flex flex-wrap gap-4 p-4'
-							>
-								<Expanses {...expense} />
-							</div>
-						))}
+					<div className='flex flex-wrap gap-4 justify-center'>
+						{expenses.length &&
+							expenses?.map((expense, index) => (
+								<div
+									key={index}
+									className='flex flex-wrap gap-4 p-4'
+								>
+									<Expanses {...expense} />
+								</div>
+							))}
 					</div>
 				</div>
 			</div>
