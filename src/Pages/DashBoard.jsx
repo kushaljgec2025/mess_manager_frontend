@@ -7,6 +7,7 @@ import { Expanses, MessCard } from '../components';
 function DashBoard() {
 	const [name, setName] = React.useState('');
 	const [expenses, setExpenses] = React.useState([]);
+	const [limit, setLimit] = React.useState(5);
 
 	const userDetails = useSelector((state) => state.auth.userData);
 	const messData = useSelector((state) => state.mess.messData).data;
@@ -23,10 +24,10 @@ function DashBoard() {
 	}, [userDetails]);
 
 	useEffect(() => {
-		getTransactions().then((data) => {
+		getTransactions(limit).then((data) => {
 			setExpenses(data);
 		});
-	}, []);
+	}, [limit]);
 
 	return (
 		<>
@@ -62,15 +63,38 @@ function DashBoard() {
 					<h1 className='text-2xl font-semibold text-gray-400'>
 						Your Expenses
 					</h1>
-					<div className='flex flex-col gap-4'>
-						{expenses.map((expense, index) => (
-							<div
-								key={index}
-								className='flex flex-wrap gap-4 p-4'
-							>
-								<Expanses {...expense} />
+					<div>
+						{expenses.length ? (
+							<div>
+								<div className='flex flex-row gap-4'>
+									<h2 className='text-lg font-semibold text-gray-400'>
+										Select limit
+									</h2>
+									<select
+										value={limit}
+										onChange={(e) => setLimit(e.target.value)}
+										className='py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+									>
+										<option value='5'>5</option>
+										<option value='10'>10</option>
+										<option value='15'>15</option>
+										<option value='20'>20</option>
+									</select>
+								</div>
+								<div className='flex flex-wrap gap-4 justify-center'>
+									{expenses?.map((expense, index) => (
+										<div
+											key={index}
+											className='flex flex-wrap gap-4 p-4'
+										>
+											<Expanses {...expense} />
+										</div>
+									))}
+								</div>
 							</div>
-						))}
+						) : (
+							<h2>No Expenses Found</h2>
+						)}
 					</div>
 				</div>
 			</div>
