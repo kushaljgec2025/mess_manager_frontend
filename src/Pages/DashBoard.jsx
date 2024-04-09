@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getTransactions } from '../api/transaction';
 import { Expanses, MessCard } from '../components';
+import { calculateTotalSpentThisMonth } from '../utils/expensesCal';
 
 function DashBoard() {
 	const [name, setName] = React.useState('');
 	const [expenses, setExpenses] = React.useState([]);
+	const [totalSpentThisMonth, setTotalSpentThisMonth] = React.useState(0);
 	const [limit, setLimit] = React.useState(5);
 
 	const userDetails = useSelector((state) => state.auth.userData);
@@ -25,6 +27,7 @@ function DashBoard() {
 
 	useEffect(() => {
 		getTransactions(limit).then((data) => {
+			setTotalSpentThisMonth(calculateTotalSpentThisMonth(data));
 			setExpenses(data);
 		});
 	}, [limit]);
@@ -32,7 +35,22 @@ function DashBoard() {
 	return (
 		<>
 			<div className='min-h-screen flex flex-col gap-2 p-4'>
-				<h1 className='text-4xl font-serif font-light italic  '>Hi! {name}</h1>
+				<div className='flex flex-row justify-between'>
+					<div>
+						<h1 className='text-4xl font-serif font-light italic'>
+							Hi! {name}
+						</h1>
+						<h2 className='text-xl font-light text-gray-400'>
+							You spend total ₹{totalSpentThisMonth} in this month
+						</h2>
+					</div>
+					<button
+						className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md ml-4'
+						onClick={redirect}
+					>
+						Create Mess
+					</button>
+				</div>
 				<div className='flex flex-col my-4 gap-8'>
 					<h2 className='text-2xl font-semibold text-gray-400'>Your Messes</h2>
 					{messData?.length ? (
@@ -73,12 +91,38 @@ function DashBoard() {
 									<select
 										value={limit}
 										onChange={(e) => setLimit(e.target.value)}
-										className='py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+										className='appearance-none text-gray-900 bg-white border border-gray-300 px-2 py-1 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
 									>
-										<option value='5'>5</option>
-										<option value='10'>10</option>
-										<option value='15'>15</option>
-										<option value='20'>20</option>
+										<option
+											value='5'
+											className='text-gray-900 hover:bg-gray-100'
+										>
+											5
+										</option>
+										<option
+											value='10'
+											className='text-gray-900 hover:bg-gray-100'
+										>
+											10
+										</option>
+										<option
+											value='15'
+											className='text-gray-900 hover:bg-gray-100'
+										>
+											15
+										</option>
+										<option
+											value='20'
+											className='text-gray-900 hover:bg-gray-100'
+										>
+											20
+										</option>
+										<option
+											value='25'
+											className='text-gray-900 hover:bg-gray-100'
+										>
+											25
+										</option>
 									</select>
 								</div>
 								<div className='flex flex-wrap gap-4 justify-center'>
