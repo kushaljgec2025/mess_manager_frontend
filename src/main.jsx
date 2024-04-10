@@ -9,7 +9,6 @@ import {
 	createRoutesFromElements,
 } from 'react-router-dom';
 import Login from './Pages/Login.jsx';
-import Mess from './Pages/Mess.jsx';
 import Registration from './Pages/Registration.jsx';
 import DashBoard from './Pages/DashBoard.jsx';
 import User from './Pages/User.jsx';
@@ -17,6 +16,7 @@ import { Provider } from 'react-redux';
 import store from './store/store.js';
 import UserById from './Pages/UserById.jsx';
 import CreateNewMess from './Pages/CreateNewMess.jsx';
+import MessByID from './Pages/MessByID.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -46,7 +46,7 @@ const router = createBrowserRouter(
 			/>
 			<Route
 				path='mess/:id'
-				element={<Mess />}
+				element={<MessByID />}
 			/>
 			<Route
 				path='create-new-mess'
