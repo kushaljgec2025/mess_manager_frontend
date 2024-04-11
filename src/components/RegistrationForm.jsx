@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input, Button } from './index';
+import { userSignup } from '../api/auth';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function RegistrationForm() {
 	const {
@@ -9,11 +12,32 @@ function RegistrationForm() {
 		formState: { errors },
 	} = useForm({});
 	const [error, setError] = useState('');
-	const submit = (data) => {
-		try {
-			console.log('User details', data);
-		} catch (error) {
-			setError(error.message);
+	const navigate = useNavigate();
+	const submit = async (data) => {
+		setError('');
+		const user = await userSignup(data);
+
+		console.log(user);
+
+		if (user?.success === 201) {
+			setError('');
+			console.log(user);
+			toast.success('User Registered', {
+				duration: 3000,
+				position: 'bottom-right',
+			});
+
+			setTimeout(() => {
+				navigate('/login');
+			}, 2000);
+		} else if (user?.success === false) {
+			console.log('error', user);
+			setError(user.message);
+			toast.error('Registration failed', {
+				duration: 3000,
+				position: 'bottom-right',
+			});
+		} else {
 		}
 	};
 
@@ -143,6 +167,9 @@ function RegistrationForm() {
 						>
 							Register
 						</Button>
+						{error && (
+							<p className='text-red-700 text-xs text-center mb-2'>{error}</p>
+						)}
 						<p className='text-center'>
 							Already have a account?{' '}
 							<span className='text-blue-600 cursor-pointer hover:underline'>

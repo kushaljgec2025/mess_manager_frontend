@@ -23,7 +23,7 @@ const PasswordInput = forwardRef(function PasswordInput(
 				)}
 				<div className='flex flex-row border-slate-400 rounded-md bg-[#EAEDF1] ${className} opacity-80'>
 					<input
-						className={`border-2 w-full text-black  p-1  focus:outline-none`}
+						className={`border-2 w-full text-white  p-1  focus:outline-none`}
 						type={showPassword ? 'text' : 'password'}
 						ref={ref}
 						id={id}

@@ -9,10 +9,14 @@ import {
 	createRoutesFromElements,
 } from 'react-router-dom';
 import Login from './Pages/Login.jsx';
-import Mess from './Pages/Mess.jsx';
 import Registration from './Pages/Registration.jsx';
 import DashBoard from './Pages/DashBoard.jsx';
 import User from './Pages/User.jsx';
+import { Provider } from 'react-redux';
+import store from './store/store.js';
+import UserById from './Pages/UserById.jsx';
+import CreateNewMess from './Pages/CreateNewMess.jsx';
+import MessByID from './Pages/MessByID.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -33,18 +37,28 @@ const router = createBrowserRouter(
 				element={<Login />}
 			/>
 			<Route
-				path='user/:id'
+				path='user'
 				element={<User />}
 			/>
 			<Route
+				path='user/:id'
+				element={<UserById />}
+			/>
+			<Route
 				path='mess/:id'
-				element={<Mess />}
+				element={<MessByID />}
+			/>
+			<Route
+				path='create-new-mess'
+				element={<CreateNewMess />}
 			/>
 		</Route>
 	)
 );
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<Provider store={store}>
+			<RouterProvider router={router} />
+		</Provider>
 	</React.StrictMode>
 );
