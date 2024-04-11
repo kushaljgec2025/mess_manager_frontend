@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import Expanses from './Expanses';
 import MessCard from './MessCard';
+import Member from './Member';
 
 export {
 	RegistrationForm,
@@ -18,4 +19,5 @@ export {
 	Footer,
 	Expanses,
 	MessCard,
+	Member,
 };

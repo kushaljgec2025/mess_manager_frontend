@@ -24,9 +24,7 @@ function UserById() {
 
 	return (
 		<>
-			<div className='dashboard  w-full p-2 m-2 flex flex-col justify-center items-center space-y-4 '>
-				<h1 className='title text-center text-3xl'>Dashboard</h1>
-
+			<div className='dashboard min-h-screen  w-full p-2 m-2 flex flex-col justify-center items-center space-y-4 '>
 				<div className='dashboard-container bg-gray-900 w-1/2 max-h-screen  space-y-4 flex flex-col  justify-center items-center rounded-xl p-4 '>
 					<div className=' relative img-container  w-[15em] h-[15em] '>
 						<img
