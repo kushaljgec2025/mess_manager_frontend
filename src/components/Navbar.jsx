@@ -72,7 +72,13 @@ function Navbar() {
             <img className=" h-10 w-auto" src="/favicon.png" alt="" />
           </div>
 
-          <div className=" grow gap-6 text-gray-500 hidden sm:flex  sm:justify-around bg-gray-700 px-4 py-2 rounded-lg">
+          <div
+            className={`${
+              isOpen
+                ? "flex flex-col h-[50vh] transition-all duration-500 py-10"
+                : "hidden h-0"
+            } grow gap-6 text-gray-500 z-10 sm:flex sm:static absolute inset-0 sm:h-full py-2  sm:justify-around bg-gray-700 px-4  rounded-lg`}
+          >
             {navitems.map((item, index) => {
               return (
                 <div
@@ -94,7 +100,7 @@ function Navbar() {
             />
             <AiOutlineSearch className="text-white ml-2 text-4xl shrink-0 hover:bg-white hover:text-gray-700 rounded-full p-2" />
           </div>
-          <div className="sm:hidden ">
+          <div className="sm:hidden z-10 ">
             <Hamburger toggled={isOpen} toggle={setOpen} />
           </div>
         </div>
