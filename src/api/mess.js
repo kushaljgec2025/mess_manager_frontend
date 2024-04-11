@@ -38,3 +38,17 @@ export const getMess = async () => {
 		}
 	}
 };
+
+export const getMessMembers = async (messId) => {
+	try {
+		const response = await axios.get(
+			`/api/v1/mess/get-mess-members-info/${messId}`,
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
