@@ -3,13 +3,11 @@ import Navbar from "../components/Navbar";
 import { RiPencilLine, RiLogoutBoxLine } from "react-icons/ri";
 function DashBoard() {
   return (
-    <div className="dashboard  w-full p-2 m-2 flex flex-col justify-center items-center space-y-4 ">
-      <Navbar />
-
+    <div className="dashboard  w-full p-2  flex flex-col justify-center items-center space-y-4 ">
       <h1 className="title text-center text-3xl">Dashboard</h1>
 
-      <div className="dashboard-container bg-gray-900 w-1/2 max-h-screen  space-y-4 flex flex-col  justify-center items-center rounded-xl p-4 ">
-        <div className=" relative img-container  w-[15em] h-[15em] ">
+      <div className="dashboard-container bg-gray-900 w-full max-h-screen  space-y-4 flex flex-col  justify-center items-center rounded-3xl p-4 ">
+        <div className=" relative img-container  w-[10em] h-[10em] ">
           <img
             src="https://images.pexels.com/photos/1933873/pexels-photo-1933873.jpeg?auto=compress&cs=tinysrgb&w=600"
             alt="user_img"
@@ -31,7 +29,7 @@ function DashBoard() {
         <h2>
           Member Since : <span>12 May , 2023</span>
         </h2>
-        <div className=" detail grid grid-cols-3  p-3 m-2 space-x-2">
+        <div className=" detail flex  p-3 m-2 space-x-2">
           <div className="border-2 border-sky-200 p-2  rounded-md bg-cyan-600 ">
             <h2 className="text-xl font-bold">Monthly Payment</h2>
             <h1>₹ 1200</h1>
