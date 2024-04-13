@@ -135,7 +135,7 @@ function MessByID() {
 					{isMember && (
 						<Pagination
 							currentPage={currentPage}
-							totalPages={20}
+							totalPages={14}
 							maxPagesToShow={7}
 							onPageChange={handlePageChange}
 						/>
