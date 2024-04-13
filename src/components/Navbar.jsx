@@ -1,74 +1,112 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import Hamburger from "hamburger-react";
 
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AiOutlineUser } from "react-icons/ai";
+import {
+  AiOutlineHome,
+  AiOutlineNotification,
+  AiOutlineMessage,
+  AiOutlineSearch,
+  AiFillPlusSquare,
+  AiOutlinePlusSquare,
+} from "react-icons/ai";
+const iconstyle = "text-2xl text-white";
 function Navbar() {
-	const navigate = useNavigate();
-	const userDetails = useSelector((state) => state.auth.userData);
+  const navigate = useNavigate();
+  const userDetails = useSelector((state) => state.auth.userData);
+  const [isOpen, setOpen] = useState(false);
+  const iconstyle = "text-md text-white";
+  const navitems = [
+    {
+      key: "home",
+      icon: <AiOutlineHome className={iconstyle} />,
+      name: "Home",
+      onClick: () => navigate("/"),
+    },
+    {
+      key: "notification",
+      icon: <AiOutlineNotification className={iconstyle} />,
+      name: "Notification",
+      onClick: () => {
+        // Add your navigation logic here
+      },
+    },
+    {
+      key: "message",
+      icon: <AiOutlineMessage className={iconstyle} />,
+      name: "Message",
+      onClick: () => {
+        // Add your navigation logic here
+      },
+    },
+    {
+      key: "create",
+      icon: <AiOutlinePlusSquare className={iconstyle} />,
+      name: "Create Mess",
+      onClick: () => {
+        // Add your navigation logic here
+      },
+    },
+    {
+      key: "user",
+      icon: <AiOutlineUser className={iconstyle} />,
+      name: "User",
+      onClick: () => {
+        // Add your navigation logic here
+      },
+    },
+  ];
 
-	return (
-		<>
-			<div>
-				<nav className='bg-gray-800'>
-					<div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
-						<div className='relative flex items-center justify-between h-16'>
-							<div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start'>
-								<div
-									className='flex-shrink-0 flex items-center cursor-pointer hover:bg-gray-700 px-2 py-2 rounded-full text-lg font-medium'
-									onClick={() => {
-										navigate('/');
-									}}
-								>
-									<img
-										className='hidden md:block h-10 w-auto'
-										src='/favicon.png'
-										alt=''
-									/>
-								</div>
-							</div>
-							<div className='flex-1 flex items-center justify-center sm:items-stretch sm:justify-start text-gray-500'>
-								<h1 className='text-4xl font-serif font-medium '>
-									Mess Manager
-								</h1>
-							</div>
-							<div className='hidden sm:block sm:ml-6'>
-								{Object.keys(userDetails).length !== 0 ? (
-									<div className='flex space-x-4'>
-										<div
-											className='flex-shrink-0 flex items-center cursor-pointer hover:bg-gray-700 px-3 py-2 rounded-md text-lg font-medium'
-											onClick={() => {
-												navigate('/user');
-											}}
-										>
-											<img
-												className='hidden lg:block h-10 w-auto'
-												src={userDetails?.userAvatar}
-												alt=''
-											/>
-										</div>
-										<p className='hover:bg-gray-700 hover:text-red-500 px-3 py-2 rounded-md text-lg text-red-600 font-medium cursor-pointer'>
-											Log out
-										</p>
-									</div>
-								) : (
-									<div
-										className='flex space-x-4'
-										onClick={() => {
-											navigate('/login');
-										}}
-									>
-										<p className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-lg font-medium cursor-pointer'>
-											Login
-										</p>
-									</div>
-								)}
-							</div>
-						</div>
-					</div>
-				</nav>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <nav className="bg-gray-800 w-full">
+        <div className=" flex items-center justify-between  gap-4   sm:px-10 py-4 px-4 ">
+          <div
+            className="md:block hidden items-center cursor-pointer hover:bg-gray-700 rounded-full text-lg font-medium"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            <img className=" h-10 w-auto" src="/favicon.png" alt="" />
+          </div>
+
+          <div
+            className={`${
+              isOpen
+                ? "flex flex-col h-[50vh] transition-all duration-500 py-10"
+                : "hidden h-0"
+            } grow gap-6 text-gray-500 z-10 sm:flex sm:static absolute inset-0 sm:h-full py-2  sm:justify-around bg-gray-700 px-4  rounded-lg`}
+          >
+            {navitems.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col justify-center items-center  cursor-pointer"
+                  onClick={item.onClick}
+                >
+                  <div>{item.icon}</div>
+                  <p className="text-white">{item.name}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="  text-gray-500 flex justify-center items-center cursor-pointer">
+            <input
+              type="text"
+              placeholder="Search"
+              className="bg-gray-700 p-2 rounded-lg text-white "
+            />
+            <AiOutlineSearch className="text-white ml-2 text-4xl shrink-0 hover:bg-white hover:text-gray-700 rounded-full p-2" />
+          </div>
+          <div className="sm:hidden z-10 ">
+            <Hamburger toggled={isOpen} toggle={setOpen} />
+          </div>
+        </div>
+      </nav>
+    </>
+  );
 }
 
 export default Navbar;

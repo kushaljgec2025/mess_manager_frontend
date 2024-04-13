@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { Button } from './index';
 import { addTransaction } from '../api/transaction';
 import toast from 'react-hot-toast';
@@ -27,7 +27,9 @@ function AddMoneyOnMess(props) {
 					duration: 3000,
 					position: 'bottom-right',
 				});
-				window.location.reload();
+				setTimeout(() => {
+					window.location.reload();
+				}, 2000);
 			} else {
 				setError(response.message);
 			}
