@@ -4,6 +4,7 @@ import { getMessesById, getMessMembers } from '../api/mess';
 import { useNavigate, useParams } from 'react-router-dom';
 import { capitalizeEachWord } from '../utils/capitalizeEachWord';
 import { AddMoneyOnMess, Member } from '../components';
+import Pagination from '../components/Pagination/Pagination';
 
 function MessByID() {
 	const { id } = useParams();
@@ -12,6 +13,11 @@ function MessByID() {
 	const [messMembers, setMessMembers] = useState([]);
 	const [messAdmin, setMessAdmin] = useState('');
 	const [isMember, setIsMember] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+	};
 
 	const navigate = useNavigate();
 
@@ -125,6 +131,15 @@ function MessByID() {
 								))}
 						</div>
 					</div>
+
+					{isMember && (
+						<Pagination
+							currentPage={currentPage}
+							totalPages={17}
+							maxPagesToShow={7}
+							onPageChange={handlePageChange}
+						/>
+					)}
 					{isMessAdmin && (
 						<div className='flex flex-col w-full gap-4'>
 							<div>
