@@ -53,7 +53,7 @@ function AddMoneyOnMess(props) {
 							</label>
 							<input
 								type='number'
-								className='border-2 border-gray-400 focus:outline-none rounded-lg p-1 w-1/6'
+								className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg p-1 w-1/6'
 								{...register('amount', {
 									required: true,
 									min: 10,
@@ -70,7 +70,7 @@ function AddMoneyOnMess(props) {
 							<textarea
 								rows={4}
 								cols={50}
-								className='border-2 border-gray-400 focus:outline-none rounded-lg p-1 w-1/2'
+								className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg p-1 w-1/2'
 								{...register('description', { required: true })}
 							/>
 						</div>
@@ -83,13 +83,13 @@ function AddMoneyOnMess(props) {
 							</label>
 							<select
 								{...register('select')}
-								className='border-2 border-gray-400 focus:outline-none rounded-lg p-2 w-2/5'
+								className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg p-2 w-2/5'
 							>
 								{props.messMembers?.map((user) => (
 									<option
 										key={user._id}
 										value={user._id} // Set the value to user._id instead of 'select'
-										className='text-gray-400 font-semibold text-base py-2 hover:bg-gray-800 rounded-lg cursor-pointer' // Reduced py-4 to py-2
+										className='text-white font-semibold text-base py-2 hover:bg-gray-800 rounded-lg cursor-pointer' // Reduced py-4 to py-2
 									>
 										{user.fullName}
 									</option>
