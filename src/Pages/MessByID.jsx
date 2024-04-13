@@ -14,7 +14,14 @@ function MessByID() {
 	const [messAdmin, setMessAdmin] = useState('');
 	const [isMember, setIsMember] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
+
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+	};
+
 	const [incomingMoney, setIncomingMoney] = useState([]);
+
 
 	const navigate = useNavigate();
 
@@ -132,10 +139,18 @@ function MessByID() {
 								))}
 						</div>
 					</div>
+
+
+					{isMember && (
+						<Pagination
+							currentPage={currentPage}
+							totalPages={14}
+
 					{isMember && (
 						<Pagination
 							currentPage={currentPage}
 							totalPages={17}
+
 							maxPagesToShow={7}
 							onPageChange={handlePageChange}
 						/>

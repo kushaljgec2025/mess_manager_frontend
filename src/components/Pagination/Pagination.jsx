@@ -43,7 +43,9 @@ const Pagination = ({
 							key={page}
 							onClick={() => onPageChange(page)}
 							className={`p-2 rounded-md ${
-								isCurrentPage ? 'bg-slate-400' : ''
+
+								isCurrentPage ? ' bg-gray-400' : ''
+
 							}`}
 						>
 							{page}
