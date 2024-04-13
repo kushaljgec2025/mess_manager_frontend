@@ -8,6 +8,7 @@ import Footer from './Footer';
 import Expanses from './Expanses';
 import MessCard from './MessCard';
 import Member from './Member';
+import AddMoneyOnMess from './AddMoneyOnMess';
 
 export {
 	RegistrationForm,
@@ -20,4 +21,5 @@ export {
 	Expanses,
 	MessCard,
 	Member,
+	AddMoneyOnMess,
 };

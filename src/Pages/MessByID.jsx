@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { getMessesById, getMessMembers } from '../api/mess';
 import { useNavigate, useParams } from 'react-router-dom';
 import { capitalizeEachWord } from '../utils/capitalizeEachWord';
-import { Member } from '../components';
+import { AddMoneyOnMess, Member } from '../components';
+import Pagination from '../components/Pagination/Pagination';
 
 function MessByID() {
 	const { id } = useParams();
@@ -12,11 +13,17 @@ function MessByID() {
 	const [messMembers, setMessMembers] = useState([]);
 	const [messAdmin, setMessAdmin] = useState('');
 	const [isMember, setIsMember] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [incomingMoney, setIncomingMoney] = useState([]);
 
 	const navigate = useNavigate();
 
 	const messData = useSelector((state) => state.mess.messData).data;
 	const userDetails = useSelector((state) => state.auth.userData);
+
+	const handlePageChange = (page) => {
+		setCurrentPage(page);
+	};
 
 	useEffect(() => {
 		if (messData?.length > 0) {
@@ -24,7 +31,7 @@ function MessByID() {
 			if (selectedMess) {
 				setMess(selectedMess);
 				setIsMember(true);
-				console.log('Got this from the mess data Redux', selectedMess);
+				// console.log('Got this from the mess data Redux', selectedMess);
 				if (selectedMess?.messAdmin?.includes(userDetails?._id)) {
 					// console.log('You are the admin of this mess');
 					setIsMessAdmin(true);
@@ -34,7 +41,7 @@ function MessByID() {
 			} else {
 				getMessesById(id).then((data) => {
 					setMess(data);
-					console.log('Got this from the API', data);
+					// console.log('Got this from the API', data);
 				});
 			}
 		}
@@ -42,7 +49,7 @@ function MessByID() {
 
 	useEffect(() => {
 		getMessMembers(id).then((data) => {
-			setMessMembers(data.members);
+			setMessMembers(data);
 			// console.log('Mess Members:', data.members);
 			data?.members?.forEach((member) => {
 				if (member._id === data?.messAdmin) {
@@ -94,13 +101,17 @@ function MessByID() {
 							Mess Members
 						</h1>
 						<div className='flex flex-wrap w-full my-2 gap-2 justify-center'>
-							{messMembers?.length &&
-								messMembers?.map((member) => (
+							{messMembers?.members?.length &&
+								messMembers?.members?.map((member) => (
 									<div
 										key={member._id}
 										className='w-full mx-4 cursor-pointer hover:shadow-lg hover:bg-gray-800 rounded-lg'
 									>
-										<Member {...member} />
+										<Member
+											{...member}
+											isMember
+											messID={messMembers._id}
+										/>
 									</div>
 								))}
 						</div>
@@ -121,6 +132,42 @@ function MessByID() {
 								))}
 						</div>
 					</div>
+					{isMember && (
+						<Pagination
+							currentPage={currentPage}
+							totalPages={17}
+							maxPagesToShow={7}
+							onPageChange={handlePageChange}
+						/>
+					)}
+					{isMessAdmin && (
+						<div className='flex flex-col w-full gap-4'>
+							<div>
+								<AddMoneyOnMess
+									messMembers={messMembers.members}
+									messId={messMembers._id}
+								/>
+							</div>
+							<button
+								className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
+								onClick={() => navigate(`/mess/${id}/add-member`)}
+							>
+								Add Member
+							</button>
+							<button
+								className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
+								onClick={() => navigate(`/mess/${id}/add-menu`)}
+							>
+								Add Menu
+							</button>
+							<button
+								className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
+								onClick={() => navigate(`/mess/${id}/add-expense`)}
+							>
+								Add Expense
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</>
