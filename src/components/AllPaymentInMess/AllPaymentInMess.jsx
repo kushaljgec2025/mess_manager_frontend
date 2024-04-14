@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../Pagination/Pagination';
 import { getTransactionsByMessId } from '../../api/transaction';
 import extractDateAndTime from '../../utils/extractDateAndTime';
+import Input from '../Input';
 
-function AllPaymentInMess({ messId }) {
+function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [incomingMoney, setIncomingMoney] = useState([]);
 	const [length, setLength] = useState(3);
+	const [isEditable, setIsEditable] = useState(false);
 
+	// console.log(messMembers);
 	const handlePageChange = (page) => {
 		setCurrentPage(page);
 	};
@@ -19,12 +22,17 @@ function AllPaymentInMess({ messId }) {
 			.slice((page_number - 1) * page_size, page_number * page_size);
 	}
 
+	const saveEditTransaction = () => {
+		console.log('Save Transaction');
+		setIsEditable(false);
+	};
+
 	useEffect(() => {
 		getTransactionsByMessId(messId)
 			.then((data) => {
 				setLength(data.length);
 				setIncomingMoney(paginate(data, 2, currentPage));
-				console.log(paginate(data, 2, currentPage));
+				// console.log(paginate(data, 2, currentPage));
 			})
 			.catch((err) => {
 				console.log(err);
@@ -37,18 +45,130 @@ function AllPaymentInMess({ messId }) {
 					{incomingMoney.map((transaction) => (
 						<div
 							key={transaction._id}
-							className='bg-gray-800 p-2 rounded-lg w-full flex flex-col justify-between items-start'
+							className='bg-gray-800 p-4 rounded-lg w-full flex flex-col gap-2 items-start'
 						>
+							{isMessAdmin && (
+								<div className='flex flex-row w-full gap-2 justify-end'>
+									{isEditable && (
+										<button
+											onClick={saveEditTransaction}
+											className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
+										>
+											save
+										</button>
+									)}
+									{isEditable ? (
+										<div
+											onClick={() => setIsEditable(false)}
+											className='p-1 bg-red-500 rounded-full hover:bg-red-600 cursor-pointer'
+										>
+											<svg
+												stroke='currentColor'
+												fill='currentColor'
+												stroke-width='0'
+												version='1.1'
+												viewBox='0 0 16 16'
+												height='1em'
+												width='1em'
+												xmlns='http://www.w3.org/2000/svg'
+											>
+												<path d='M15.854 12.854c-0-0-0-0-0-0l-4.854-4.854 4.854-4.854c0-0 0-0 0-0 0.052-0.052 0.090-0.113 0.114-0.178 0.066-0.178 0.028-0.386-0.114-0.529l-2.293-2.293c-0.143-0.143-0.351-0.181-0.529-0.114-0.065 0.024-0.126 0.062-0.178 0.114 0 0-0 0-0 0l-4.854 4.854-4.854-4.854c-0-0-0-0-0-0-0.052-0.052-0.113-0.090-0.178-0.114-0.178-0.066-0.386-0.029-0.529 0.114l-2.293 2.293c-0.143 0.143-0.181 0.351-0.114 0.529 0.024 0.065 0.062 0.126 0.114 0.178 0 0 0 0 0 0l4.854 4.854-4.854 4.854c-0 0-0 0-0 0-0.052 0.052-0.090 0.113-0.114 0.178-0.066 0.178-0.029 0.386 0.114 0.529l2.293 2.293c0.143 0.143 0.351 0.181 0.529 0.114 0.065-0.024 0.126-0.062 0.178-0.114 0-0 0-0 0-0l4.854-4.854 4.854 4.854c0 0 0 0 0 0 0.052 0.052 0.113 0.090 0.178 0.114 0.178 0.066 0.386 0.029 0.529-0.114l2.293-2.293c0.143-0.143 0.181-0.351 0.114-0.529-0.024-0.065-0.062-0.126-0.114-0.178z'></path>
+											</svg>
+										</div>
+									) : (
+										<div
+											onClick={() => setIsEditable(!isEditable)}
+											className='p-1 bg-green-500 rounded-full hover:bg-green-600 cursor-pointer'
+										>
+											<svg
+												stroke='currentColor'
+												fill='currentColor'
+												stroke-width='0'
+												viewBox='0 0 1024 1024'
+												height='1em'
+												width='1em'
+												xmlns='http://www.w3.org/2000/svg'
+											>
+												<path d='M880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32zm-622.3-84c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 0 0 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 0 0 9.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9z'></path>
+											</svg>
+										</div>
+									)}
+									{!isEditable && (
+										<div className='p-1 bg-red-500 rounded-full hover:bg-red-600 cursor-pointer'>
+											<svg
+												stroke='currentColor'
+												fill='currentColor'
+												stroke-width='0'
+												viewBox='0 0 24 24'
+												height='1em'
+												width='1em'
+												xmlns='http://www.w3.org/2000/svg'
+											>
+												<g>
+													<path
+														fill='none'
+														d='M0 0h24v24H0z'
+													></path>
+													<path d='M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z'></path>
+												</g>
+											</svg>
+										</div>
+									)}
+								</div>
+							)}
 							<div className='flex flex-row'>
 								<h1 className='text-lg text-white'>Payed By :&nbsp;</h1>
-								<h1 className='text-lg text-white'>
-									{transaction.payedBy.fullName}
-								</h1>
+								{isEditable ? (
+									<select
+										defaultValue={transaction.payedBy._id}
+										className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg '
+									>
+										{messMembers?.map((user) => (
+											<option
+												key={user._id}
+												value={user._id} // Set the value to user._id instead of 'select'
+												className='text-white font-semibold text-base py-2 hover:bg-gray-800 rounded-lg cursor-pointer' // Reduced py-4 to py-2
+											>
+												{user.fullName}
+											</option>
+										))}
+									</select>
+								) : (
+									<h1 className='text-lg text-white'>
+										{transaction.payedBy.fullName}
+									</h1>
+								)}
 							</div>
-							<p className='text-sm  text-white'>{transaction.description}</p>
-							<div className='flex flex-row'>
-								<h1 className='text-lg text-white'>Amount :&nbsp;</h1>
-								<p className='text-lg text-white'>{transaction.amount}</p>
+							{isEditable ? (
+								<div className='flex flex-row items-center'>
+									<label
+										htmlFor='description'
+										className='text-white'
+									>
+										Description :&nbsp;
+									</label>
+									<input
+										type='text'
+										defaultValue={transaction.description}
+										className='w-2/5 border-2 rounded-md border-slate-400 text-black opacity-80 p-1 ${className} focus:outline-none'
+									/>
+								</div>
+							) : (
+								<p className='text-sm  text-white'>{transaction.description}</p>
+							)}
+							<div className='flex flex-row gap-2'>
+								<h1 className='text-lg text-white inline-block'>
+									Amount :&nbsp;
+								</h1>
+								{isEditable ? (
+									<input
+										type='number'
+										defaultValue={transaction.amount}
+										className='w-2/6 border-2 rounded-md border-slate-400 text-black opacity-80 p-1 ${className} focus:outline-none'
+									/>
+								) : (
+									<p className='text-lg text-white'>{transaction.amount}</p>
+								)}
 							</div>
 
 							<p className='text-xs  text-gray-400'>

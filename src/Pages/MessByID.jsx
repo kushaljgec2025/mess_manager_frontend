@@ -39,6 +39,11 @@ function MessByID() {
 					// console.log('Got this from the API', data);
 				});
 			}
+		} else {
+			getMessesById(id).then((data) => {
+				setMess(data);
+				// console.log('Got this from the API', data);
+			});
 		}
 	}, [messData, id]);
 
@@ -130,7 +135,11 @@ function MessByID() {
 
 					{isMember && (
 						<div className='w-full'>
-							<AllPaymentInMess messId={mess._id} />
+							<AllPaymentInMess
+								messId={mess._id}
+								isMessAdmin={isMessAdmin}
+								messMembers={messMembers.members}
+							/>
 						</div>
 					)}
 					{isMessAdmin && (

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const getMessesById = async (userId) => {
-	console.log(userId);
 	try {
 		const response = await axios.get(`/api/v1/users/getMessById/${userId}`, {
 			withCredentials: true,
