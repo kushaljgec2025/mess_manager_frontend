@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { capitalizeEachWord } from '../utils/capitalizeEachWord';
 import { AddMoneyOnMess, Member } from '../components';
 import Pagination from '../components/Pagination/Pagination';
+import AllPaymentInMess from '../components/AllPaymentInMess/AllPaymentInMess';
 
 function MessByID() {
 	const { id } = useParams();
@@ -13,17 +14,11 @@ function MessByID() {
 	const [messMembers, setMessMembers] = useState([]);
 	const [messAdmin, setMessAdmin] = useState('');
 	const [isMember, setIsMember] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [incomingMoney, setIncomingMoney] = useState([]);
 
 	const navigate = useNavigate();
 
 	const messData = useSelector((state) => state.mess.messData).data;
 	const userDetails = useSelector((state) => state.auth.userData);
-
-	const handlePageChange = (page) => {
-		setCurrentPage(page);
-	};
 
 	useEffect(() => {
 		if (messData?.length > 0) {
@@ -44,6 +39,11 @@ function MessByID() {
 					// console.log('Got this from the API', data);
 				});
 			}
+		} else {
+			getMessesById(id).then((data) => {
+				setMess(data);
+				// console.log('Got this from the API', data);
+			});
 		}
 	}, [messData, id]);
 
@@ -134,12 +134,13 @@ function MessByID() {
 					</div>
 
 					{isMember && (
-						<Pagination
-							currentPage={currentPage}
-							totalPages={17}
-							maxPagesToShow={7}
-							onPageChange={handlePageChange}
-						/>
+						<div className='w-full'>
+							<AllPaymentInMess
+								messId={mess._id}
+								isMessAdmin={isMessAdmin}
+								messMembers={messMembers.members}
+							/>
+						</div>
 					)}
 					{isMessAdmin && (
 						<div className='flex flex-col w-full gap-4'>

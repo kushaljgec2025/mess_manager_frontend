@@ -46,3 +46,17 @@ export const addTransaction = async (messId, memberId, amount, description) => {
 		return error.response.data;
 	}
 };
+
+export const getTransactionsByMessId = async (messId) => {
+	try {
+		const response = await axios.get(
+			`/api/v1/incomingAmount/get-incoming-transactions/${messId}`,
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};

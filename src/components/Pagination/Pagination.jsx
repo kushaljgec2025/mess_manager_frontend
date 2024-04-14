@@ -9,7 +9,6 @@ const Pagination = ({
 	let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
 	let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-	// If total pages are less than maxPagesToShow, pad the pagination array
 	if (endPage - startPage + 1 < maxPagesToShow) {
 		if (startPage === 1) {
 			endPage = Math.min(maxPagesToShow, totalPages);
@@ -43,9 +42,7 @@ const Pagination = ({
 							key={page}
 							onClick={() => onPageChange(page)}
 							className={`p-2 rounded-md ${
-
 								isCurrentPage ? ' bg-gray-400' : ''
-
 							}`}
 						>
 							{page}
