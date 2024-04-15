@@ -19,7 +19,7 @@ const Pagination = ({
 
 	return (
 		<>
-			<div className='flex flex-row text-white text-xs  '>
+			<div className='flex flex-row text-white text-base  '>
 				<button
 					onClick={() => onPageChange(Math.max(1, currentPage - 2))}
 					disabled={currentPage === 1}

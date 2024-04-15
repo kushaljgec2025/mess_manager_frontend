@@ -60,3 +60,27 @@ export const getTransactionsByMessId = async (messId) => {
 		return error.response.data;
 	}
 };
+
+export const updateTransaction = async (
+	transactionId,
+	memberId,
+	amount,
+	description
+) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/incomingAmount/update-amount/${transactionId}`,
+			{
+				memberId,
+				amount,
+				description,
+			},
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
