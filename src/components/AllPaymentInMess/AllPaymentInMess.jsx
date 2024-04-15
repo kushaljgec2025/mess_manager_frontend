@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '../Pagination/Pagination';
 import {
+	deleteTransactionById,
 	getTransactionsByMessId,
 	updateTransaction,
 } from '../../api/transaction';
 import extractDateAndTime from '../../utils/extractDateAndTime';
-import Input from '../Input';
 
 function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +32,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	const saveEditTransaction = () => {
 		updateTransaction(isChangeable, payedBy, amount, description)
 			.then((data) => {
-				console.log(data);
+				// console.log(data);
 				setIsChangeable('');
 				window.location.reload();
 			})
@@ -44,10 +44,26 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 			});
 	};
 
-	useEffect(() => {
-		getTransactionsByMessId(messId)
+	const deleteTransaction = (transactionId) => {
+		deleteTransactionById(transactionId)
 			.then((data) => {
-				setLength(data.length);
+				// console.log(data);
+				window.location.reload();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	useEffect(() => {
+		getTransactionsByMessId(messId, currentPage)
+			.then((data) => {
+				const dataLength = data.length;
+				if (dataLength % 2 == 0) {
+					setLength(data.length);
+				} else {
+					setLength(data.length + 1);
+				}
 				setIncomingMoney(paginate(data, 2, currentPage));
 				// console.log(paginate(data, 2, currentPage));
 			})
@@ -58,6 +74,11 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	return (
 		<>
 			<div className='flex flex-col items-center'>
+				<div className='w-full flex items-start px-4 py-2 mb-2'>
+					<h1 className='text-2xl font-serif font-light italic text-left text-gray-400'>
+						All Payments
+					</h1>
+				</div>
 				<div className='flex flex-row gap-2'>
 					{incomingMoney.map((transaction) => (
 						<div
@@ -116,7 +137,12 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 										</div>
 									)}
 									{isEditable !== transaction._id && (
-										<div className='p-1 bg-red-500 rounded-full hover:bg-red-600 cursor-pointer'>
+										<div
+											onClick={() => {
+												deleteTransaction(transaction._id);
+											}}
+											className='p-1 bg-red-500 rounded-full hover:bg-red-600 cursor-pointer'
+										>
 											<svg
 												stroke='currentColor'
 												fill='currentColor'

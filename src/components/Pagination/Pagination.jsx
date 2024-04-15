@@ -45,11 +45,11 @@ const Pagination = ({
 								isCurrentPage ? ' bg-gray-400' : ''
 							}`}
 						>
-							{page}
+							{Math.floor(page)}
 						</button>
 					);
 				})}
-				{endPage < totalPages && <span className='flex items-center'>...</span>}
+				{/* {endPage < totalPages && <span className='flex items-center'>...</span>} */}
 				<button
 					onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
 					disabled={currentPage === totalPages}
