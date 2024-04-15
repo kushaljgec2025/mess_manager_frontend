@@ -19,18 +19,18 @@ const Pagination = ({
 
 	return (
 		<>
-			<div className='flex flex-row text-white text-base  '>
+			<div className='flex flex-row text-white text-base mt-2 my-2'>
 				<button
 					onClick={() => onPageChange(Math.max(1, currentPage - 2))}
 					disabled={currentPage === 1}
-					className='p-2'
+					className='p-2 mx-1 hover:bg-gray-300/20 hover:text-white rounded-lg'
 				>
 					&lt;&lt;
 				</button>
 				<button
 					onClick={() => onPageChange(Math.max(1, currentPage - 1))}
 					disabled={currentPage === 1}
-					className='p-2'
+					className='p-2 mx-1 hover:bg-gray-300/20 hover:text-white rounded-lg'
 				>
 					&lt;
 				</button>
@@ -41,8 +41,10 @@ const Pagination = ({
 						<button
 							key={page}
 							onClick={() => onPageChange(page)}
-							className={`p-2 rounded-md ${
-								isCurrentPage ? ' bg-gray-400' : ''
+							className={`p-2 mx-1 rounded-md ${
+								isCurrentPage
+									? ' bg-gray-400'
+									: 'hover:bg-gray-300/20 hover:text-white'
 							}`}
 						>
 							{Math.floor(page)}
@@ -53,14 +55,14 @@ const Pagination = ({
 				<button
 					onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
 					disabled={currentPage === totalPages}
-					className='p-2'
+					className='p-2 mx-1 hover:bg-gray-300/20 hover:text-white rounded-lg'
 				>
 					&gt;
 				</button>
 				<button
 					onClick={() => onPageChange(Math.min(totalPages, currentPage + 2))}
 					disabled={currentPage === totalPages}
-					className='p-2'
+					className='p-2 mx-1 hover:bg-gray-300/20 hover:text-white rounded-lg'
 				>
 					&gt;&gt;
 				</button>
