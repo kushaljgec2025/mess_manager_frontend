@@ -47,10 +47,11 @@ export const addTransaction = async (messId, memberId, amount, description) => {
 	}
 };
 
-export const getTransactionsByMessId = async (messId) => {
+export const getTransactionsByMessId = async (messId, currentPage) => {
 	try {
+		const limit = Math.max(10, currentPage * 2 + 2);
 		const response = await axios.get(
-			`/api/v1/incomingAmount/get-incoming-transactions/${messId}`,
+			`/api/v1/incomingAmount/get-incoming-transactions/${messId}?limit=${limit}`,
 			{
 				withCredentials: true,
 			}
@@ -75,6 +76,20 @@ export const updateTransaction = async (
 				amount,
 				description,
 			},
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
+
+export const deleteTransactionById = async (transactionId) => {
+	try {
+		const response = await axios.delete(
+			`/api/v1/incomingAmount/delete-amount/${transactionId}`,
 			{
 				withCredentials: true,
 			}
