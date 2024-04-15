@@ -62,7 +62,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 					{incomingMoney.map((transaction) => (
 						<div
 							key={transaction._id}
-							className='bg-gray-800 p-4 rounded-lg w-full flex flex-col gap-2 items-start'
+							className='bg-gray-800 p-4 rounded-lg w-full flex flex-col gap-2 items-start hover:bg-gray-900'
 						>
 							{isMessAdmin && (
 								<div className='flex flex-row w-full gap-2 justify-end'>

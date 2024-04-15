@@ -134,7 +134,7 @@ function MessByID() {
 					</div>
 
 					{isMember && (
-						<div className='w-full'>
+						<div className='w-full bg-gray-950 py-6 rounded-lg'>
 							<AllPaymentInMess
 								messId={mess._id}
 								isMessAdmin={isMessAdmin}
