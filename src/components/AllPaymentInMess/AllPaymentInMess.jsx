@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '../Pagination/Pagination';
-import { getTransactionsByMessId } from '../../api/transaction';
+import {
+	getTransactionsByMessId,
+	updateTransaction,
+} from '../../api/transaction';
 import extractDateAndTime from '../../utils/extractDateAndTime';
 import Input from '../Input';
 
@@ -8,7 +11,11 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [incomingMoney, setIncomingMoney] = useState([]);
 	const [length, setLength] = useState(3);
-	const [isEditable, setIsEditable] = useState(false);
+	const [isEditable, setIsEditable] = useState('');
+	const [isChangeable, setIsChangeable] = useState('');
+	const [payedBy, setPayedBy] = useState('');
+	const [description, setDescription] = useState('');
+	const [amount, setAmount] = useState(0);
 
 	// console.log(messMembers);
 	const handlePageChange = (page) => {
@@ -23,8 +30,18 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	}
 
 	const saveEditTransaction = () => {
-		console.log('Save Transaction');
-		setIsEditable(false);
+		updateTransaction(isChangeable, payedBy, amount, description)
+			.then((data) => {
+				console.log(data);
+				setIsChangeable('');
+				window.location.reload();
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+			.finally(() => {
+				setIsEditable(false);
+			});
 	};
 
 	useEffect(() => {
@@ -49,7 +66,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 						>
 							{isMessAdmin && (
 								<div className='flex flex-row w-full gap-2 justify-end'>
-									{isEditable && (
+									{isChangeable == transaction._id && isEditable && (
 										<button
 											onClick={saveEditTransaction}
 											className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
@@ -57,7 +74,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 											save
 										</button>
 									)}
-									{isEditable ? (
+									{isEditable == transaction._id ? (
 										<div
 											onClick={() => setIsEditable(false)}
 											className='p-1 bg-red-500 rounded-full hover:bg-red-600 cursor-pointer'
@@ -65,7 +82,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 											<svg
 												stroke='currentColor'
 												fill='currentColor'
-												stroke-width='0'
+												strokeWidth='0'
 												version='1.1'
 												viewBox='0 0 16 16'
 												height='1em'
@@ -77,13 +94,18 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 										</div>
 									) : (
 										<div
-											onClick={() => setIsEditable(!isEditable)}
+											onClick={() => {
+												setPayedBy(transaction.payedBy._id);
+												setDescription(transaction.description);
+												setAmount(transaction.amount);
+												setIsEditable(transaction._id);
+											}}
 											className='p-1 bg-green-500 rounded-full hover:bg-green-600 cursor-pointer'
 										>
 											<svg
 												stroke='currentColor'
 												fill='currentColor'
-												stroke-width='0'
+												strokeWidth='0'
 												viewBox='0 0 1024 1024'
 												height='1em'
 												width='1em'
@@ -93,12 +115,12 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 											</svg>
 										</div>
 									)}
-									{!isEditable && (
+									{isEditable !== transaction._id && (
 										<div className='p-1 bg-red-500 rounded-full hover:bg-red-600 cursor-pointer'>
 											<svg
 												stroke='currentColor'
 												fill='currentColor'
-												stroke-width='0'
+												strokeWidth='0'
 												viewBox='0 0 24 24'
 												height='1em'
 												width='1em'
@@ -118,16 +140,22 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 							)}
 							<div className='flex flex-row'>
 								<h1 className='text-lg text-white'>Payed By :&nbsp;</h1>
-								{isEditable ? (
+								{isEditable == transaction._id ? (
 									<select
 										defaultValue={transaction.payedBy._id}
 										className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg '
+										onChange={(e) => {
+											setPayedBy(e.target.value);
+											if (e.target.value !== transaction.payedBy._id) {
+												setIsChangeable(transaction._id);
+											}
+										}}
 									>
 										{messMembers?.map((user) => (
 											<option
 												key={user._id}
-												value={user._id} // Set the value to user._id instead of 'select'
-												className='text-white font-semibold text-base py-2 hover:bg-gray-800 rounded-lg cursor-pointer' // Reduced py-4 to py-2
+												value={user._id}
+												className='text-white font-semibold text-base py-2 hover:bg-gray-800 rounded-lg cursor-pointer'
 											>
 												{user.fullName}
 											</option>
@@ -139,7 +167,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 									</h1>
 								)}
 							</div>
-							{isEditable ? (
+							{isEditable == transaction._id ? (
 								<div className='flex flex-row items-center'>
 									<label
 										htmlFor='description'
@@ -150,6 +178,16 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 									<input
 										type='text'
 										defaultValue={transaction.description}
+										onChange={(e) => {
+											setDescription(e.target.value);
+											if (e.target.value !== transaction.description) {
+												if (e.target.value.length > 0) {
+													setIsChangeable(transaction._id); //Todo Fix bug in frontend
+												} else {
+													setIsChangeable('');
+												}
+											}
+										}}
 										className='w-2/5 border-2 rounded-md border-slate-400 text-black opacity-80 p-1 ${className} focus:outline-none'
 									/>
 								</div>
@@ -160,10 +198,18 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 								<h1 className='text-lg text-white inline-block'>
 									Amount :&nbsp;
 								</h1>
-								{isEditable ? (
+								{isEditable == transaction._id ? (
 									<input
 										type='number'
 										defaultValue={transaction.amount}
+										onChange={(e) => {
+											setAmount(e.target.value);
+											if (e.target.value !== transaction.amount) {
+												if (e.target.value.length > 10) {
+													setIsChangeable(transaction._id); //Todo Fix bug in frontend
+												}
+											}
+										}}
 										className='w-2/6 border-2 rounded-md border-slate-400 text-black opacity-80 p-1 ${className} focus:outline-none'
 									/>
 								) : (
