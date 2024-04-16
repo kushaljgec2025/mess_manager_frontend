@@ -6,6 +6,8 @@ import { capitalizeEachWord } from '../utils/capitalizeEachWord';
 import { AddMoneyOnMess, Member } from '../components';
 import Pagination from '../components/Pagination/Pagination';
 import AllPaymentInMess from '../components/AllPaymentInMess/AllPaymentInMess';
+import AddExpense from '../components/AddExpense/AddExpense';
+import AllExpenseInMess from '../components/AllExpenseInMess/AllExpenseInMess';
 
 function MessByID() {
 	const { id } = useParams();
@@ -134,12 +136,21 @@ function MessByID() {
 					</div>
 
 					{isMember && (
-						<div className='w-full bg-gray-950 py-6 rounded-xl'>
-							<AllPaymentInMess
-								messId={mess._id}
-								isMessAdmin={isMessAdmin}
-								messMembers={messMembers.members}
-							/>
+						<div className='w-full flex flex-col gap-4'>
+							<div className='w-full bg-gray-950 py-6 rounded-xl'>
+								<AllPaymentInMess
+									messId={mess._id}
+									isMessAdmin={isMessAdmin}
+									messMembers={messMembers.members}
+								/>
+							</div>
+							<div className='w-full bg-gray-950 py-6 rounded-xl'>
+								<AllExpenseInMess
+									messId={mess._id}
+									isMessAdmin={isMessAdmin}
+									messMembers={messMembers.members}
+								/>
+							</div>
 						</div>
 					)}
 					{isMessAdmin && (
@@ -150,24 +161,12 @@ function MessByID() {
 									messId={messMembers._id}
 								/>
 							</div>
-							<button
-								className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
-								onClick={() => navigate(`/mess/${id}/add-member`)}
-							>
-								Add Member
-							</button>
-							<button
-								className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
-								onClick={() => navigate(`/mess/${id}/add-menu`)}
-							>
-								Add Menu
-							</button>
-							<button
-								className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md'
-								onClick={() => navigate(`/mess/${id}/add-expense`)}
-							>
-								Add Expense
-							</button>
+							<div>
+								<AddExpense
+									messMembers={messMembers.members}
+									messId={messMembers._id}
+								/>
+							</div>
 						</div>
 					)}
 				</div>

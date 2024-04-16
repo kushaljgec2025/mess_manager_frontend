@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button } from './index';
-import { addTransaction } from '../api/transaction';
+import { Button } from '../index';
 import toast from 'react-hot-toast';
+import { addExpense } from '../../api/expense';
 
-function AddMoneyOnMess(props) {
+function AddExpense(props) {
 	const [error, setError] = useState('');
 
 	const {
@@ -14,9 +14,10 @@ function AddMoneyOnMess(props) {
 	} = useForm();
 
 	const onSubmit = (data) => {
-		addTransaction(
+		console.log(data);
+		addExpense(
 			props.messId,
-			data.select,
+			data.expenseFor,
 			data.amount,
 			data.description
 		).then((response) => {
@@ -40,10 +41,25 @@ function AddMoneyOnMess(props) {
 		<>
 			<div className='bg-gray-950 w-full space-y-4 px-8 flex flex-col rounded-xl py-4'>
 				<h1 className='text-2xl font-serif font-light italic text-left text-gray-400'>
-					Add Money to Mess
+					Add Expense to Mess
 				</h1>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className='flex flex-col gap-4 mb-5'>
+						<div className='flex flex-row gap-8  '>
+							<label
+								htmlFor='expenseFor'
+								className='text-gray-400 font-semibold text-lg'
+							>
+								Expanse For
+							</label>
+							<input
+								type='text'
+								className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg p-1 w-1/2'
+								{...register('expenseFor', {
+									required: true,
+								})}
+							/>
+						</div>
 						<div className='flex flex-row gap-8  '>
 							<label
 								htmlFor='amount'
@@ -74,34 +90,12 @@ function AddMoneyOnMess(props) {
 								{...register('description', { required: true })}
 							/>
 						</div>
-						<div className='flex flex-row gap-2'>
-							<label
-								htmlFor='select'
-								className='text-gray-400 font-semibold text-lg'
-							>
-								Select User
-							</label>
-							<select
-								{...register('select')}
-								className='border-2 bg-gray-400 border-gray-400 focus:outline-none rounded-lg p-2 w-2/5'
-							>
-								{props.messMembers?.map((user) => (
-									<option
-										key={user._id}
-										value={user._id} // Set the value to user._id instead of 'select'
-										className='text-white font-semibold text-base py-2 hover:bg-gray-800 rounded-lg cursor-pointer' // Reduced py-4 to py-2
-									>
-										{user.fullName}
-									</option>
-								))}
-							</select>
-						</div>
 
 						<Button
 							type='submit'
-							className='bg-slate-400 text-white rounded-lg p-2  '
+							className='bg-slate-400 text-white rounded-lg p-2 hover:bg-red-500 '
 						>
-							Add Money
+							Add Expense
 						</Button>
 						{errors.amount?.type === 'required' && (
 							<p className='text-red-700 text-xs'>Amount is required</p>
@@ -122,4 +116,4 @@ function AddMoneyOnMess(props) {
 	);
 }
 
-export default AddMoneyOnMess;
+export default AddExpense;
