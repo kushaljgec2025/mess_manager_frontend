@@ -33,3 +33,24 @@ export const addExpense = async (messId, expenseFor, amount, description) => {
 		return error.response.data;
 	}
 };
+
+export const updateTransaction = async (
+	transactionId,
+	payedBy,
+	amount,
+	description
+) => {};
+
+export const deleteExpenseById = async (transactionId) => {
+	try {
+		const response = await axios.delete(
+			`/api/v1/expanses/delete-expanse/${transactionId}`,
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
