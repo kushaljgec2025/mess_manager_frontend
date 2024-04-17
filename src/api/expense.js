@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-export const getExpensesByMessId = async (messId, currentPage) => {
+export const getExpensesByMessId = async (messId, limit) => {
 	try {
-		const limit = Math.max(10, currentPage * 2 + 2);
 		const response = await axios.get(
 			`/api/v1/expanses/get-expanses/${messId}/?limit=${limit}`,
 			{
