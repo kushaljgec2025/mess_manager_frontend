@@ -1,37 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from '../Pagination/Pagination';
-import {
-	deleteTransactionById,
-	getTransactionsByMessId,
-	updateTransaction,
-} from '../../api/transaction';
 import extractDateAndTime from '../../utils/extractDateAndTime';
 import { deleteExpenseById, getExpensesByMessId } from '../../api/expense';
+import EditExpense from '../Popups/EditExpense';
 
 function AllExpenseInMess({ messId, isMessAdmin, messMembers }) {
-	const [currentPage, setCurrentPage] = useState(1);
 	const [expanses, setExpanses] = useState([]);
 	const [limit, setLimit] = useState(5);
-	const [isEditable, setIsEditable] = useState('');
 	const [isChangeable, setIsChangeable] = useState('');
 	const [payedBy, setPayedBy] = useState('');
 	const [description, setDescription] = useState('');
 	const [amount, setAmount] = useState(0);
 
-	const saveEditTransaction = () => {
-		updateTransaction(isChangeable, payedBy, amount, description)
-			.then((data) => {
-				// console.log(data);
-				setIsChangeable('');
-				window.location.reload();
-			})
-			.catch((err) => {
-				console.log(err);
-			})
-			.finally(() => {
-				setIsEditable(false);
-			});
-	};
+	// const saveEditTransaction = () => {
+	// 	updateTransaction(isChangeable, payedBy, amount, description)
+	// 		.then((data) => {
+	// 			// console.log(data);
+	// 			setIsChangeable('');
+	// 			window.location.reload();
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// };
 
 	const deleteTransaction = (transactionId) => {
 		deleteExpenseById(transactionId)
@@ -92,66 +82,46 @@ function AllExpenseInMess({ messId, isMessAdmin, messMembers }) {
 							</tr>
 						</thead>
 						<tbody>
-							{expanses.map((expanse, index) => (
-								<tr key={expanse._id}>
-									<td className='border px-4 py-2'>{index + 1}</td>
-									<td className='border px-4 py-2'>
-										{extractDateAndTime(expanse.createdAt)}
-									</td>
-									<td className='border px-4 py-2'>{expanse.expanseFor}</td>
-									<td className='border px-4 py-2'>{expanse.amount}</td>
-									<td className='border px-4 py-2'>{expanse.description}</td>
-
-									{isMessAdmin && (
+							{Array.isArray(expanses) &&
+								expanses.map((expanse, index) => (
+									<tr key={expanse._id}>
+										<td className='border px-4 py-2'>{index + 1}</td>
 										<td className='border px-4 py-2'>
-											{!isEditable.length && (
-												<div className='flex justify-center space-x-2'>
-													<button
-														className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-														onClick={() => {
-															setIsEditable(expanse._id);
-															setIsChangeable(expanse._id);
-															setPayedBy(expanse.payedBy);
-															setDescription(expanse.description);
-															setAmount(expanse.amount);
-														}}
-													>
-														Edit
-													</button>
-													<button
-														className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-														onClick={() => {
-															deleteTransaction(expanse._id);
-														}}
-													>
-														Delete
-													</button>
-												</div>
-											)}
-											{isEditable === expanse._id && (
-												<div className='flex justify-center space-x-2'>
-													<button
-														className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-														onClick={() => {
-															saveEdit;
-														}}
-													>
-														Save
-													</button>
-													<button
-														className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-														onClick={() => {
-															setIsEditable('');
-														}}
-													>
-														Cancel
-													</button>
-												</div>
-											)}
+											{extractDateAndTime(expanse.createdAt)}
 										</td>
-									)}
-								</tr>
-							))}
+										<td className='border px-4 py-2'>{expanse.expanseFor}</td>
+										<td className='border px-4 py-2'>{expanse.amount}</td>
+										<td className='border px-4 py-2'>{expanse.description}</td>
+
+										{isMessAdmin && (
+											<td className='border px-4 py-2'>
+												{
+													<div className='flex justify-center space-x-2'>
+														<div
+															className=''
+															onClick={() => {
+																setIsChangeable(expanse._id);
+																setPayedBy(expanse.payedBy);
+																setDescription(expanse.description);
+																setAmount(expanse.amount);
+															}}
+														>
+															<EditExpense expanse={expanse} />
+														</div>
+														<button
+															className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+															onClick={() => {
+																deleteTransaction(expanse._id);
+															}}
+														>
+															Delete
+														</button>
+													</div>
+												}
+											</td>
+										)}
+									</tr>
+								))}
 						</tbody>
 					</table>
 				</div>

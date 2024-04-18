@@ -35,10 +35,27 @@ export const addExpense = async (messId, expenseFor, amount, description) => {
 
 export const updateTransaction = async (
 	transactionId,
-	payedBy,
+	expanseFor,
 	amount,
 	description
-) => {};
+) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/expanses/update-expanse/${transactionId}`,
+			{
+				expanseFor,
+				amount,
+				description,
+			},
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
 
 export const deleteExpenseById = async (transactionId) => {
 	try {
