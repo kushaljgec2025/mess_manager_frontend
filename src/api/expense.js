@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-export const getExpensesByMessId = async (messId, currentPage) => {
+export const getExpensesByMessId = async (messId, limit) => {
 	try {
-		const limit = Math.max(10, currentPage * 2 + 2);
 		const response = await axios.get(
 			`/api/v1/expanses/get-expanses/${messId}/?limit=${limit}`,
 			{
@@ -24,6 +23,44 @@ export const addExpense = async (messId, expenseFor, amount, description) => {
 				amount,
 				description,
 			},
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
+
+export const updateTransaction = async (
+	transactionId,
+	expanseFor,
+	amount,
+	description
+) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/expanses/update-expanse/${transactionId}`,
+			{
+				expanseFor,
+				amount,
+				description,
+			},
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
+
+export const deleteExpenseById = async (transactionId) => {
+	try {
+		const response = await axios.delete(
+			`/api/v1/expanses/delete-expanse/${transactionId}`,
 			{
 				withCredentials: true,
 			}
