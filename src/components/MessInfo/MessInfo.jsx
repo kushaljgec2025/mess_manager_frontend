@@ -3,6 +3,7 @@ import { Member } from '../index';
 import { capitalizeEachWord } from '../../utils/capitalizeEachWord';
 import EditMessImage from '../Popups/EditMessImage';
 import EditMessInfo from '../Popups/EditMessInfo';
+import ChangeAdmin from '../Popups/ChangeAdmin';
 
 function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 	return (
@@ -43,6 +44,12 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 				>
 					{capitalizeEachWord(messAdmin?.fullName)}
 				</h1>
+				{isMessAdmin && (
+					<ChangeAdmin
+						messMembers={messMembers}
+						messID={mess._id}
+					/>
+				)}
 			</div>
 			<div className='flex flex-col gap-4 m-6'>
 				<h1 className='text-2xl font-serif mx-4 font-light italic'>
