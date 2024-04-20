@@ -51,3 +51,20 @@ export const getMessMembers = async (messId) => {
 		return error.response.data;
 	}
 };
+
+export const updateMessLogo = async (messId, data) => {
+	try {
+		const formData = new FormData();
+		formData.append('messLogo', data, data.name);
+		const response = await axios.patch(
+			`/api/v1/mess/update-mess-logo/${messId}`,
+			formData,
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
