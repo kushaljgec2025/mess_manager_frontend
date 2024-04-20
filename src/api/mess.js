@@ -68,3 +68,18 @@ export const updateMessLogo = async (messId, data) => {
 		return error.response.data;
 	}
 };
+
+export const updateMessInfo = async (messId, data) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/mess/update-mess-info/${messId}`,
+			data,
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};

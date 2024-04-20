@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Member } from '../index';
 import { capitalizeEachWord } from '../../utils/capitalizeEachWord';
 import EditMessImage from '../Popups/EditMessImage';
+import EditMessInfo from '../Popups/EditMessInfo';
 
 function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 	return (
@@ -14,14 +15,16 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 				/>
 				{isMessAdmin && <EditMessImage mess={mess} />}
 			</div>
-			<div className='flex flex-col gap-2 justify-center items-center bg-slate-800 p-4 rounded-lg'>
-				{isMessAdmin && <EditMessImage mess={mess} />}
-				<h1 className='text-4xl font-serif font-light italic'>
-					{capitalizeEachWord(mess?.messName)}
-				</h1>
-				<h2 className='text-xl font-light text-gray-400'>
-					{mess?.messDescription}
-				</h2>
+			<div className='flex flex-row gap-2 bg-slate-800 p-4 rounded-lg'>
+				<div className='flex flex-col gap-2 justify-center items-center py-2'>
+					<h1 className='text-4xl font-serif font-light italic'>
+						{capitalizeEachWord(mess?.messName)}
+					</h1>
+					<h2 className='text-xl font-light text-gray-400'>
+						{mess?.messDescription}
+					</h2>
+				</div>
+				{isMessAdmin && <EditMessInfo mess={mess} />}
 			</div>
 			{isMember && (
 				<div>
