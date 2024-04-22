@@ -3,6 +3,10 @@ import { useForm } from 'react-hook-form';
 import { Button } from './index';
 import { addTransaction } from '../api/transaction';
 import toast from 'react-hot-toast';
+import { getMess, getMessMembers } from '../api/mess';
+import { addMess } from '../store/features/mess/messSlice';
+import { addMessMembers } from '../store/features/mess/messMembersSlice';
+import { useDispatch } from 'react-redux';
 
 function AddMoneyOnMess(props) {
 	const [error, setError] = useState('');
@@ -10,8 +14,11 @@ function AddMoneyOnMess(props) {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm();
+
+	const dispatch = useDispatch();
 
 	const onSubmit = (data) => {
 		addTransaction(
@@ -21,15 +28,19 @@ function AddMoneyOnMess(props) {
 			data.description
 		).then((response) => {
 			if (response.success === 201) {
-				console.log(response);
+				// console.log(response);
 				setError('');
 				toast.success('Successfully add money', {
 					duration: 3000,
 					position: 'bottom-right',
 				});
-				setTimeout(() => {
-					window.location.reload();
-				}, 2000);
+				getMess(props.messId).then((data) => {
+					dispatch(addMess(data));
+				});
+				getMessMembers(props.messId).then((data) => {
+					dispatch(addMessMembers(data));
+				});
+				reset();
 			} else {
 				setError(response.message);
 			}

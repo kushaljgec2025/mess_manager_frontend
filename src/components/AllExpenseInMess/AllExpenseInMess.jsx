@@ -38,7 +38,7 @@ function AllExpenseInMess({ messId, isMessAdmin, messMembers }) {
 		getExpensesByMessId(messId, limit)
 			.then((data) => {
 				// console.log(data);
-				setExpanses(data);
+				setExpanses(data.reverse());
 			})
 			.catch((err) => {
 				console.log(err);

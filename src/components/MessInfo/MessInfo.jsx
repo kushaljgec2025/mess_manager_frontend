@@ -4,6 +4,7 @@ import { capitalizeEachWord } from '../../utils/capitalizeEachWord';
 import EditMessImage from '../Popups/EditMessImage';
 import EditMessInfo from '../Popups/EditMessInfo';
 import ChangeAdmin from '../Popups/ChangeAdmin';
+import EditMessMembers from '../Popups/EditMessMembers';
 
 function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 	return (
@@ -34,16 +35,18 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 					</h1>
 				</div>
 			)}
-			<div className='flex flex-row items-center'>
-				<h1 className='text-2xl font-serif font-light italic'>
-					Mess Admin :&nbsp;
-				</h1>
-				<h1
-					className='text-2xl font-serif font-light italic cursor-pointer text-cyan-600 hover:underline'
-					onClick={() => navigate(`/user/${messAdmin?._id}`)}
-				>
-					{capitalizeEachWord(messAdmin?.fullName)}
-				</h1>
+			<div className='flex flex-row items-center justify-center gap-2'>
+				<div className='flex flex-row items-center'>
+					<h1 className='text-2xl font-serif font-light italic'>
+						Mess Admin :&nbsp;
+					</h1>
+					<h1
+						className='text-2xl font-serif font-light italic cursor-pointer text-cyan-600 hover:underline'
+						onClick={() => navigate(`/user/${messAdmin?._id}`)}
+					>
+						{capitalizeEachWord(messAdmin?.fullName)}
+					</h1>
+				</div>
 				{isMessAdmin && (
 					<ChangeAdmin
 						messMembers={messMembers}
@@ -56,6 +59,7 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 					Mess Members
 				</h1>
 				<div className='flex flex-wrap w-full my-2 gap-2 justify-center'>
+					{isMessAdmin && <EditMessMembers messMembers={messMembers} />}
 					{messMembers?.members?.length &&
 						messMembers?.members?.map((member) => (
 							<div

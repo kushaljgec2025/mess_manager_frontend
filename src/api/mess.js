@@ -83,3 +83,20 @@ export const updateMessInfo = async (messId, data) => {
 		return error.response.data;
 	}
 };
+
+export const changeMessAdmin = async (messId, data) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/mess/update-mess-admin/${messId}`,
+			{
+				newAdminId: data.value,
+			},
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
