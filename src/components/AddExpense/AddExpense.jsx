@@ -3,6 +3,10 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../index';
 import toast from 'react-hot-toast';
 import { addExpense } from '../../api/expense';
+import { getMess } from '../../api/mess';
+import { addMess } from '../../store/features/mess/messSlice';
+import { addMessMembers } from '../../store/features/mess/messMembersSlice';
+import { useDispatch } from 'react-redux';
 
 function AddExpense(props) {
 	const [error, setError] = useState('');
@@ -12,6 +16,8 @@ function AddExpense(props) {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
+
+	const dispatch = useDispatch();
 
 	const onSubmit = (data) => {
 		console.log(data);
@@ -28,9 +34,12 @@ function AddExpense(props) {
 					duration: 3000,
 					position: 'bottom-right',
 				});
-				setTimeout(() => {
-					window.location.reload();
-				}, 2000);
+				getMess(props.messId).then((data) => {
+					dispatch(addMess(data));
+				});
+				getMessMembers(props.messId).then((data) => {
+					dispatch(addMessMembers(data));
+				});
 			} else {
 				setError(response.message);
 			}

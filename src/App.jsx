@@ -20,7 +20,6 @@ export default function App() {
 						.then((messData) => {
 							dispatch(addMess(messData));
 							messData.data.forEach((mess) => {
-								console.log(mess._id);
 								getMessMembers(mess._id)
 									.then((messMembers) => {
 										dispatch(addMessMembers(messMembers));

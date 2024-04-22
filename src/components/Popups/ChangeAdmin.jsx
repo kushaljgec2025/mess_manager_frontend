@@ -1,17 +1,52 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
 import Popup from 'reactjs-popup';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
+import Select from 'react-select';
+import { changeMessAdmin, getMessMembers } from '../../api/mess';
+import { addMessMembers } from '../../store/features/mess/messMembersSlice';
 
-function ChangeAdmin({ mess }) {
-	const { register, handleSubmit } = useForm();
+function ChangeAdmin({ messMembers }) {
+	const [selectedAdmin, setSelectedAdmin] = useState(null);
 
 	const dispatch = useDispatch();
 
-	const onSubmit = (data, close) => {
+	const onSubmit = (close) => {
 		close();
+		if (!selectedAdmin) {
+			toast.error('Please select a new admin');
+			return;
+		}
+
+		changeMessAdmin(messMembers?._id, selectedAdmin).then((data) => {
+			console.log(data);
+			getMessMembers(messMembers?._id)
+				.then((messMembers) => {
+					dispatch(addMessMembers(messMembers));
+					toast.success('Admin changed successfully');
+				})
+				.catch((error) => {
+					console.log(
+						'An error occurred while fetching mess members data:',
+						error
+					);
+				});
+		});
 	};
+
+	const options = messMembers?.members?.map((member) => ({
+		value: member._id,
+		label: (
+			<div className='flex items-center'>
+				<img
+					src={member.userAvatar}
+					alt={member.fullName}
+					className='w-6 h-6 rounded-full mr-2'
+				/>
+				<span>{member.fullName}</span>
+			</div>
+		),
+	}));
 
 	return (
 		<Popup
@@ -40,23 +75,32 @@ function ChangeAdmin({ mess }) {
 		>
 			{(close) => (
 				<div className='bg-white rounded-xl p-4 w-96 '>
-					<form onSubmit={handleSubmit((data) => onSubmit(data, close))}>
-						<div className='flex flex-col gap-4 mb-5 text-gray-400'></div>
-						<div className='flex flex-row gap-4 justify-center items-center'>
-							<button
-								type='submit'
-								className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-							>
-								Submit
-							</button>
-							<a
-								className='close cursor-pointer bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-								onClick={close}
-							>
-								Cancel
-							</a>
-						</div>
-					</form>
+					<div className='flex flex-col gap-4 mb-5 text-gray-400'>
+						<label htmlFor='admin'>Select New Admin</label>
+						<Select
+							value={selectedAdmin}
+							defaultValue={messMembers?.messAdmin}
+							onChange={(selectedOption) => setSelectedAdmin(selectedOption)}
+							options={options}
+							className='border border-gray-300 rounded-md p-2'
+						/>
+					</div>
+					<div className='flex flex-row gap-4 justify-center items-center'>
+						<button
+							type='button'
+							onClick={() => onSubmit(close)}
+							className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+						>
+							Submit
+						</button>
+						<button
+							type='button'
+							onClick={close}
+							className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+						>
+							Cancel
+						</button>
+					</div>
 				</div>
 			)}
 		</Popup>

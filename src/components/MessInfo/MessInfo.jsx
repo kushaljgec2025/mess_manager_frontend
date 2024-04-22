@@ -34,16 +34,18 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 					</h1>
 				</div>
 			)}
-			<div className='flex flex-row items-center'>
-				<h1 className='text-2xl font-serif font-light italic'>
-					Mess Admin :&nbsp;
-				</h1>
-				<h1
-					className='text-2xl font-serif font-light italic cursor-pointer text-cyan-600 hover:underline'
-					onClick={() => navigate(`/user/${messAdmin?._id}`)}
-				>
-					{capitalizeEachWord(messAdmin?.fullName)}
-				</h1>
+			<div className='flex flex-row items-center justify-center gap-2'>
+				<div className='flex flex-row items-center'>
+					<h1 className='text-2xl font-serif font-light italic'>
+						Mess Admin :&nbsp;
+					</h1>
+					<h1
+						className='text-2xl font-serif font-light italic cursor-pointer text-cyan-600 hover:underline'
+						onClick={() => navigate(`/user/${messAdmin?._id}`)}
+					>
+						{capitalizeEachWord(messAdmin?.fullName)}
+					</h1>
+				</div>
 				{isMessAdmin && (
 					<ChangeAdmin
 						messMembers={messMembers}
