@@ -20,6 +20,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	const [payedBy, setPayedBy] = useState('');
 	const [description, setDescription] = useState('');
 	const [amount, setAmount] = useState(0);
+	const [render, setRender] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -29,10 +30,11 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 	};
 
 	function paginate(array, page_size, page_number) {
-		return array
-			.slice()
-			.reverse()
-			.slice((page_number - 1) * page_size, page_number * page_size);
+		// return array
+		// 	.slice()
+		// 	.reverse()
+		// 	.slice((page_number - 1) * page_size, page_number * page_size);
+		return array.slice((page_number - 1) * page_size, page_number * page_size);
 	}
 
 	const saveEditTransaction = () => {
@@ -46,6 +48,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 				getMessMembers(messId).then((data) => {
 					dispatch(addMessMembers(data));
 				});
+				setRender(!render);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -59,7 +62,13 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 		deleteTransactionById(transactionId)
 			.then((data) => {
 				// console.log(data);
-				window.location.reload();
+				getMess(messId).then((data) => {
+					dispatch(addMess(data));
+				});
+				getMessMembers(messId).then((data) => {
+					dispatch(addMessMembers(data));
+				});
+				setRender(!render);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -81,7 +90,7 @@ function AllPaymentInMess({ messId, isMessAdmin, messMembers }) {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [currentPage]);
+	}, [currentPage, render]);
 	return (
 		<>
 			<div className='flex flex-col items-center'>

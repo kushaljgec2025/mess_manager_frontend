@@ -4,6 +4,7 @@ import { capitalizeEachWord } from '../../utils/capitalizeEachWord';
 import EditMessImage from '../Popups/EditMessImage';
 import EditMessInfo from '../Popups/EditMessInfo';
 import ChangeAdmin from '../Popups/ChangeAdmin';
+import EditMessMembers from '../Popups/EditMessMembers';
 
 function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 	return (
@@ -58,6 +59,7 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 					Mess Members
 				</h1>
 				<div className='flex flex-wrap w-full my-2 gap-2 justify-center'>
+					{isMessAdmin && <EditMessMembers messMembers={messMembers} />}
 					{messMembers?.members?.length &&
 						messMembers?.members?.map((member) => (
 							<div
