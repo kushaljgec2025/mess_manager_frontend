@@ -58,21 +58,27 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 				<h1 className='text-2xl font-serif mx-4 font-light italic'>
 					Mess Members
 				</h1>
-				<div className='flex flex-wrap w-full my-2 gap-2 justify-center'>
-					{isMessAdmin && <EditMessMembers messMembers={messMembers} />}
-					{messMembers?.members?.length &&
-						messMembers?.members?.map((member) => (
-							<div
-								key={member._id}
-								className='w-full mx-4 cursor-pointer hover:shadow-lg hover:bg-gray-800 rounded-lg'
-							>
-								<Member
-									{...member}
-									isMember
-									messID={messMembers._id}
-								/>
-							</div>
-						))}
+				<div className='flex flex-col gap-2 w-full '>
+					{isMessAdmin && (
+						<div className='flex justify-end items-end w-full p-4'>
+							<EditMessMembers messMembers={messMembers} />
+						</div>
+					)}
+					<div className='flex flex-wrap gap-4 justify-center items-center w-full'>
+						{messMembers?.members?.length &&
+							messMembers?.members?.map((member) => (
+								<div
+									key={member._id}
+									className='w-full mx-4 cursor-pointer hover:shadow-lg hover:bg-gray-800 rounded-lg'
+								>
+									<Member
+										{...member}
+										isMember
+										messID={messMembers._id}
+									/>
+								</div>
+							))}
+					</div>
 				</div>
 			</div>
 			<div className='flex flex-row gap-2 items-start justify-start w-full px-6'>

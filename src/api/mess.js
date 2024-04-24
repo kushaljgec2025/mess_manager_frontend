@@ -100,3 +100,34 @@ export const changeMessAdmin = async (messId, data) => {
 		return error.response.data;
 	}
 };
+
+export const addNewMember = async (messId, data) => {
+	try {
+		const response = await axios.post(
+			`/api/v1/mess/add-member-to-mess/${messId}`,
+			{ email: data.email },
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
+
+export const removeMember = async (messId, data) => {
+	try {
+		const memberId = data.value.toString();
+		const response = await axios.patch(
+			`/api/v1/mess/remove-member-from-mess/${messId}`,
+			{ memberId },
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};

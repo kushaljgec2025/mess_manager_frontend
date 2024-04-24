@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import toast from 'react-hot-toast';
 import { addMess } from '../../store/features/mess/messSlice';
+import { addNewMember, getMessMembers, removeMember } from '../../api/mess';
+import { addMessMembers } from '../../store/features/mess/messMembersSlice';
 
 function EditMessMembers({ messMembers }) {
 	const { register, handleSubmit } = useForm();
@@ -26,17 +28,27 @@ function EditMessMembers({ messMembers }) {
 	}));
 
 	const onSubmitAdd = (data, close) => {
-		console.log('Add member:', data);
-		// Dispatch your action here
-		toast.success('Member added successfully');
 		close();
+		addNewMember(messMembers._id, data).then((res) => {
+			getMessMembers(messMembers._id).then((data) => {
+				dispatch(addMessMembers(data));
+				toast.success('Member added successfully');
+			});
+		});
 	};
 
 	const onSubmitDelete = (data, close) => {
-		console.log('Delete member:', data);
-		// Dispatch your action here
-		toast.success('Member deleted successfully');
 		close();
+		removeMember(messMembers._id, data)
+			.then((res) => {
+				getMessMembers(messMembers._id).then((data) => {
+					dispatch(addMessMembers(data));
+					toast.success('Member deleted successfully');
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	return (
