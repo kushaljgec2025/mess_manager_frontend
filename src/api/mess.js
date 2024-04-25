@@ -131,3 +131,33 @@ export const removeMember = async (messId, data) => {
 		return error.response.data;
 	}
 };
+
+export const addMessItem = async (messId, data) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/mess/add-mess-menu/${messId}`,
+			{ menu: data.newMenu },
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
+
+export const removeMessItem = async (messId, data) => {
+	try {
+		const response = await axios.patch(
+			`/api/v1/mess/remove-mess-menu/${messId}`,
+			{ menu: data.toString() },
+			{
+				withCredentials: true,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
