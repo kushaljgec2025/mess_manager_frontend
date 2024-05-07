@@ -35,21 +35,11 @@ function DashBoard() {
 	return (
 		<>
 			<div className='min-h-screen flex flex-col gap-2 p-4'>
-				<div className='flex flex-row justify-between'>
-					<div>
-						<h1 className='text-4xl font-serif font-light italic'>
-							Hi! {name}
-						</h1>
-						<h2 className='text-xl font-light text-gray-400'>
-							You spend total ₹{totalSpentThisMonth} in this month
-						</h2>
-					</div>
-					<button
-						className='bg-green-500 hover:bg-green-600 text-white px-4 rounded-md ml-4'
-						onClick={redirect}
-					>
-						Create Mess
-					</button>
+				<div className='flex flex-col justify-start gap-2'>
+					<h1 className='text-4xl font-serif font-light italic'>Hi! {name}</h1>
+					<h2 className='text-xl font-light text-gray-400'>
+						You spend total ₹{totalSpentThisMonth} in this month
+					</h2>
 				</div>
 				<div className='flex flex-col my-4 gap-8'>
 					<h2 className='text-2xl font-semibold text-gray-400'>Your Messes</h2>

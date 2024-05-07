@@ -51,27 +51,6 @@ function UserById() {
 							  ))
 							: ''}
 					</div>
-					{/* <h2>
-						Member Since : <span>12 May , 2023</span>
-					</h2> */}
-					<div className=' detail grid grid-cols-3  p-3 m-2 space-x-2'>
-						<div className='border-2 border-sky-200 p-2  rounded-md bg-cyan-600 '>
-							<h2 className='text-xl font-bold'>Monthly Payment</h2>
-							<h1>₹ 1200</h1>
-						</div>
-						<div className='border-2 border-sky-200 p-2 rounded-md bg-cyan-600 '>
-							<h2 className='text-xl font-bold'>Due Payment</h2>
-							<h1>₹ 200</h1>
-						</div>
-						<div className='border-2 border-sky-200 p-2 rounded-md bg-cyan-600 '>
-							<h2 className='text-xl font-bold'>Remaining Days</h2>
-							<h1>12 Days</h1>
-						</div>
-					</div>
-					{/* <div className=' p-2 rounded-md m-auto flex space-x-2 bg-red-600 cursor-pointer'>
-						<span>Leave Messs</span>
-						<RiLogoutBoxLine className=' text-center m-auto' />
-					</div> */}
 				</div>
 			</div>
 		</>

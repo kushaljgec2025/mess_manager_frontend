@@ -17,6 +17,7 @@ import store from './store/store.js';
 import UserById from './Pages/UserById.jsx';
 import CreateNewMess from './Pages/CreateNewMess.jsx';
 import MessByID from './Pages/MessByID.jsx';
+import NotFoundPage from './Pages/NotFoundPage.jsx';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -51,6 +52,10 @@ const router = createBrowserRouter(
 			<Route
 				path='create-new-mess'
 				element={<CreateNewMess />}
+			/>
+			<Route
+				path='*'
+				element={<NotFoundPage />}
 			/>
 		</Route>
 	)
