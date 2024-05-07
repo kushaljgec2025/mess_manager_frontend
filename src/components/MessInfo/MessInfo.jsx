@@ -5,6 +5,7 @@ import EditMessImage from '../Popups/EditMessImage';
 import EditMessInfo from '../Popups/EditMessInfo';
 import ChangeAdmin from '../Popups/ChangeAdmin';
 import EditMessMembers from '../Popups/EditMessMembers';
+import EditMessMenu from '../Popups/EditMessMenu';
 
 function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 	return (
@@ -58,27 +59,43 @@ function MessInfo({ mess, isMember, messAdmin, messMembers, isMessAdmin }) {
 				<h1 className='text-2xl font-serif mx-4 font-light italic'>
 					Mess Members
 				</h1>
-				<div className='flex flex-wrap w-full my-2 gap-2 justify-center'>
-					{isMessAdmin && <EditMessMembers messMembers={messMembers} />}
-					{messMembers?.members?.length &&
-						messMembers?.members?.map((member) => (
-							<div
-								key={member._id}
-								className='w-full mx-4 cursor-pointer hover:shadow-lg hover:bg-gray-800 rounded-lg'
-							>
-								<Member
-									{...member}
-									isMember
-									messID={messMembers._id}
-								/>
-							</div>
-						))}
+				<div className='flex flex-col gap-2 w-full '>
+					{isMessAdmin && (
+						<div className='flex justify-end items-end w-full p-4'>
+							<EditMessMembers messMembers={messMembers} />
+						</div>
+					)}
+					<div className='flex flex-wrap gap-4 justify-center items-center w-full'>
+						{messMembers?.members?.length &&
+							messMembers?.members?.map((member) => (
+								<div
+									key={member._id}
+									className='w-full mx-4 cursor-pointer hover:shadow-lg hover:bg-gray-800 rounded-lg'
+								>
+									<Member
+										{...member}
+										isMember
+										messID={messMembers._id}
+									/>
+								</div>
+							))}
+					</div>
 				</div>
 			</div>
-			<div className='flex flex-row gap-2 items-start justify-start w-full px-6'>
-				<h1 className='text-2xl font-serif font-light italic mx-2'>
-					Mess Menu
-				</h1>
+			<div className='flex flex-col gap-2 items-start justify-start w-full px-6'>
+				<div className='flex flex-row justify-between gap-2 w-full'>
+					<h1 className='text-2xl font-serif w-full font-light italic mx-2'>
+						Mess Menu
+					</h1>
+					{isMessAdmin && (
+						<div className='flex justify-end items-end w-full p-4'>
+							<EditMessMenu
+								messMenu={mess.messMenu}
+								messId={mess._id}
+							/>
+						</div>
+					)}
+				</div>
 				<div className='flex flex-wrap gap-4 justify-center items-center'>
 					{mess?.messMenu?.length &&
 						mess?.messMenu.map((menu, index) => (

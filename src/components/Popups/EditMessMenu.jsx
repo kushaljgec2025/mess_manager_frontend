@@ -5,50 +5,33 @@ import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import toast from 'react-hot-toast';
 import { addMess } from '../../store/features/mess/messSlice';
-import { addNewMember, getMessMembers, removeMember } from '../../api/mess';
-import { addMessMembers } from '../../store/features/mess/messMembersSlice';
+import { addMessItem, getMess, removeMessItem } from '../../api/mess';
 
-function EditMessMembers({ messMembers }) {
-	const { register, handleSubmit } = useForm();
-	const [selectMember, setSelectMember] = React.useState(null);
+function EditMessMenu({ messMenu, messId }) {
+	const { register, handleSubmit, reset } = useForm();
+	const [selectedMenu, setSelectedMenu] = React.useState('');
 	const dispatch = useDispatch();
 
-	const options = messMembers?.members?.map((member) => ({
-		value: member._id,
-		label: (
-			<div className='flex items-center'>
-				<img
-					src={member.userAvatar}
-					alt={member.fullName}
-					className='w-6 h-6 rounded-full mr-2'
-				/>
-				<span>{member.fullName}</span>
-			</div>
-		),
-	}));
-
-	const onSubmitAdd = (data, close) => {
+	const onAddMenu = (data, close) => {
 		close();
-		addNewMember(messMembers._id, data).then((res) => {
-			getMessMembers(messMembers._id).then((data) => {
-				dispatch(addMessMembers(data));
-				toast.success('Member added successfully');
+		addMessItem(messId, data).then((response) => {
+			getMess(messId).then((data) => {
+				dispatch(addMess(data));
+				toast.success('Menu Item Added Successfully');
+				reset();
 			});
 		});
 	};
 
-	const onSubmitDelete = (data, close) => {
+	const onDeleteMenu = (data, close) => {
 		close();
-		removeMember(messMembers._id, data)
-			.then((res) => {
-				getMessMembers(messMembers._id).then((data) => {
-					dispatch(addMessMembers(data));
-					toast.success('Member deleted successfully');
-				});
-			})
-			.catch((err) => {
-				console.log(err);
+		removeMessItem(messId, data).then((response) => {
+			getMess(messId).then((data) => {
+				dispatch(addMess(data));
+				toast.success('Menu Item Deleted Successfully');
+				reset();
 			});
+		});
 	};
 
 	return (
@@ -77,19 +60,19 @@ function EditMessMembers({ messMembers }) {
 			position='bottom center'
 		>
 			{(close) => (
-				<div className='bg-white rounded-xl p-4 w-96 '>
-					<form onSubmit={handleSubmit((data) => onSubmitAdd(data, close))}>
+				<div className='bg-white rounded-xl p-4 w-96'>
+					<form onSubmit={handleSubmit((data) => onAddMenu(data, close))}>
 						<h1 className='text-xl font-serif mx-4 font-light italic text-gray-400 text-center'>
-							Add New Member
+							Add New Menu Item
 						</h1>
 						<div className='flex flex-col gap-4 mb-5 text-gray-400'>
-							<label htmlFor='email'>Members Email Id</label>
+							<label htmlFor='newMenu'>New Food Item</label>
 							<input
-								type='email'
-								name='email'
+								type='text'
+								name='newMenu'
 								className='border border-gray-300 rounded-md p-2'
-								placeholder='Enter email'
-								{...register('email')}
+								placeholder='Enter new food item'
+								{...register('newMenu')}
 							/>
 						</div>
 						<div className='flex flex-row gap-4 justify-center items-center'>
@@ -103,18 +86,21 @@ function EditMessMembers({ messMembers }) {
 					</form>
 					<br />
 					<form
-						onSubmit={handleSubmit(() => onSubmitDelete(selectMember, close))}
+						onSubmit={handleSubmit(() => onDeleteMenu(selectedMenu, close))}
 					>
 						<h1 className='text-xl font-serif mx-4 font-light italic text-gray-400 text-center'>
-							Delete Member
+							Delete Menu
 						</h1>
 						<div className='flex flex-col gap-4 mb-5 text-gray-400'>
-							<label htmlFor='email'>Delete Member</label>
+							<label htmlFor='deleteItem'>Select Food For Delete</label>
 							<Select
-								{...register('user')}
-								options={options}
-								className='border border-gray-300 rounded-md p-2'
-								onChange={(selectedOption) => setSelectMember(selectedOption)}
+								options={messMenu.map((menu, index) => ({
+									label: menu,
+									value: menu,
+								}))}
+								onChange={(selectedOption) =>
+									setSelectedMenu(selectedOption.value)
+								}
 							/>
 						</div>
 						<div className='flex flex-row gap-4 justify-center items-center'>
@@ -132,4 +118,4 @@ function EditMessMembers({ messMembers }) {
 	);
 }
 
-export default EditMessMembers;
+export default EditMessMenu;
